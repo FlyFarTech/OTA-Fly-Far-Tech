@@ -1,0 +1,853 @@
+import {
+  Box,
+  ClickAwayListener,
+  Grid,
+  Typography,
+  Collapse,
+  Grow,
+} from "@mui/material";
+import React, { useState } from "react";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { format } from "date-fns";
+import flightData from "../flightData";
+import FlightOutlinedIcon from "@mui/icons-material/FlightOutlined";
+import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+
+const Oneway = ({
+  setfaddress,
+  setToAddress,
+  fromSearchText,
+  setFromSearchText,
+  fromSendData,
+  setFromSendData,
+  toSendData,
+  setToSendData,
+  toSearchText,
+  setToSearchText,
+  adultCount,
+  childCount,
+  infant,
+  setResult,
+  from,
+  setFrom,
+  setChangeFrom,
+  handleSearch,
+  tripType,
+}) => {
+  const data = flightData; // json data from flight Data
+  const initialData = [
+    {
+      code: "DAC",
+      name: "Hazrat Shahjalal Intl Airport",
+      Address: "Dhaka,BANGLADESH",
+    },
+    {
+      code: "DXB",
+      name: "Dubai Intl Airport",
+      Address: "Dubai,UNITED ARAB EMIRATES",
+    },
+    {
+      code: "CXB",
+      name: "Cox's Bazar Airport",
+      Address: "Cox's Bazar,Bangladesh",
+    },
+    {
+      code: "JSR",
+      name: "Jashore Airport",
+      Address: "Jashore,Bangladesh",
+    },
+    {
+      code: "BZL",
+      name: "Barishal Airport",
+      Address: "Barishal,Bangladesh",
+    },
+    {
+      code: "RJH",
+      name: "Shah Makhdum Airport",
+      Address: "Rajshahi,Bangladesh",
+    },
+    {
+      code: "SPD",
+      name: "Saidpur Airport",
+      Address: "Saidpur,Bangladesh",
+    },
+  ];
+  const [fromSuggest, setFromSuggest] = useState(initialData);
+  const [toSuggest, setToSuggest] = useState(initialData);
+  // const [open, setOpen] = useState(false);
+  const [openDate, setOpenDate] = useState(false);
+  const [openFrom, setOpenFrom] = useState(false);
+  const [openTo, setOpenTo] = useState(false);
+  const handleClickAway = () => {
+    setOpenFrom(false);
+    setOpenTo(false);
+    setOpenDate(false);
+    setResult(adultCount + childCount + infant);
+  };
+
+  const formOnChange = (e) => {
+    const searchvalue = e.target.value;
+    if (searchvalue.length > 2) {
+      const suggestion = data.filter((item) =>
+        item.code.toLowerCase().includes(searchvalue.toLowerCase())
+      );
+      setFromSuggest(suggestion);
+      if (suggestion.length === 0) {
+        const suggestion = data.filter(
+          (item) =>
+            item.code.toLowerCase().includes(searchvalue.toLowerCase()) ||
+            item.Address.toLowerCase().includes(searchvalue.toLowerCase())
+        );
+        setFromSuggest(suggestion);
+      }
+    } else {
+      setFromSuggest(initialData);
+    }
+  };
+
+  const fromSuggestedText = (name, code, address) => {
+    setFromSendData(code);
+    setFromSearchText(`${name} (${code})`);
+    setFromSuggest([]);
+    setfaddress(address);
+    setOpenFrom(false);
+    setOpenTo(true);
+  };
+
+  const toOnChange = (e) => {
+    const searchvalue = e.target.value;
+    if (searchvalue.length > 2) {
+      const suggestion = data.filter((item) =>
+        item.code.toLowerCase().includes(searchvalue.toLowerCase())
+      );
+      setToSuggest(suggestion);
+      if (suggestion.length === 0) {
+        const suggestion = data.filter(
+          (item) =>
+            item.code.toLowerCase().includes(searchvalue.toLowerCase()) ||
+            item.Address.toLowerCase().includes(searchvalue.toLowerCase())
+        );
+        setToSuggest(suggestion);
+      }
+    } else {
+      setToSuggest(initialData);
+    }
+  };
+  const toSuggestedText = (name, code, address) => {
+    setToSendData(code);
+    setToSearchText(`${name} (${code})`);
+    setToSuggest([]);
+    setToAddress(address);
+    setOpenTo(false);
+    setTimeout(() => setOpenDate(true), 200);
+  };
+
+  const fromGetSuggetion = () => {
+    return (
+      <Box
+        style={{
+          height: "fit-content",
+          position: "relative",
+          width: "100%",
+          zIndex: "100",
+        }}
+      >
+        <Box
+          sx={{
+            maxHeight: "230px",
+            overflowY: "auto",
+
+            boxShadow:
+              "rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px",
+            "&::-webkit-scrollbar": { width: "5px" },
+          }}
+        >
+          {fromSuggest.length !== 0 ? (
+            fromSuggest.map((item, index) => {
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    paddingLeft: "10px",
+                    backgroundColor: "var(--secondary-bgcolor)",
+                    transition: "all .5s ease-in-out",
+                    "&:hover": {
+                      backgroundColor: "var(--primary-color)",
+                      color: "var(--white)",
+                    },
+                    "&:hover .address": { color: "var(--white)" },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      margin: "0px 0px",
+                      padding: "5px 0px",
+                      cursor: "pointer",
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                    onClick={() => {
+                      fromSuggestedText(
+                        ` ${item.name}`,
+                        ` ${item.code} `,
+                        `${item.Address}`
+                      );
+                    }} //suggest to display name select with multiple data pass parameter
+                  >
+                    <Box>
+                      <Typography
+                        className="address"
+                        sx={{
+                          fontSize: "12px",
+                          color: "var(--input-bgcolor)",
+                          display: "block",
+                          textAlign: "left",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {item.Address}
+                      </Typography>
+                      <Typography
+                        style={{
+                          fontSize: "11px",
+                          display: "block",
+                          textAlign: "left",
+                          color: "var(--white)",
+                        }}
+                      >
+                        {item.name}
+                      </Typography>
+                    </Box>
+                    <Box
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography
+                        style={{
+                          fontSize: "13px",
+                          display: "block",
+                          textAlign: "left",
+                          paddingRight: "5px",
+                          color: "#999",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {item.code}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            })
+          ) : (
+            <Box>
+              <Typography
+                variant="subtitle-2"
+                style={{
+                  color: "var(--primary-color)",
+                  fontWidth: "bold",
+                  paddingLeft: "10px",
+                }}
+              >
+                Not found
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    );
+  };
+
+  const toGetSuggetion = () => {
+    return (
+      <Box
+        style={{
+          height: "fit-content",
+          position: "relative",
+          width: "100%",
+          zIndex: "100",
+        }}
+      >
+        <Box
+          sx={{
+            boxShadow:
+              "rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px",
+            maxHeight: "230px",
+            overflowY: "auto",
+
+            "&::-webkit-scrollbar": { width: "5px" },
+          }}
+        >
+          {toSuggest.length !== 0 ? (
+            toSuggest.map((item, index) => {
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    paddingLeft: "10px",
+                    paddingRight: "5px",
+                    backgroundColor: "var( --secondary-color)",
+                    transition: "all .5s ease-in-out",
+                    "&:hover": {
+                      backgroundColor: "var(--primary-color)",
+                      color: "var(--white)",
+                    },
+                    "&:hover .address": { color: "var(--white)" },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      margin: "0px 0px",
+                      padding: "5px 0px",
+                      cursor: "pointer",
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                    onClick={() =>
+                      toSuggestedText(
+                        ` ${item.name}`,
+                        `${item.code}`,
+                        `${item.Address}`
+                      )
+                    } //suggest to display name select with multiple data pass parameter
+                  >
+                    <Box>
+                      <Typography
+                        className="address"
+                        sx={{
+                          fontSize: "12px",
+                          color: "var(--input-bgcolor)",
+                          display: "block",
+                          textAlign: "left",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {item.Address}
+                      </Typography>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          display: "block",
+                          color: "var(--white)",
+                          textAlign: "left",
+                        }}
+                      >
+                        {item.name}
+                      </span>
+                    </Box>
+                    <Box
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: "13px",
+
+                          display: "block",
+                          textAlign: "left",
+                          color: "#999",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {item.code}
+                      </span>
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            })
+          ) : (
+            <Box>
+              <Typography
+                variant="subtitle2"
+                style={{
+                  color: "var(--primary-color)",
+                  fontWidth: "bold",
+                  paddingLeft: "10px",
+                }}
+              >
+                Not found
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    );
+  };
+
+  const handleSelect = (date) => {
+    setFrom(date);
+    setChangeFrom(true);
+    setOpenDate(false);
+  };
+  return (
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <Grow in={tripType} timeout={500} unmountOnExit sx={{ width: "100%" }}>
+        <Box style={{ position: "relative" }}>
+          <form onSubmit={handleSearch}>
+            <Grid
+              sx={{
+                height: "fit-content",
+                width: "100%",
+              }}
+              container
+              rowSpacing={{ lg: 0, md: 0, sm: 1, xs: 1 }}
+              columnSpacing={0}
+            >
+              {/* //todo: Departure City section */}
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4.5}
+                sx={{
+                  position: "relative",
+                  height: "fit-content",
+                }}
+              >
+                <Box
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Box
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "3px",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          width: "100%",
+                          textAlign: "center",
+                          color: "var(--text-color)",
+                          fontSize: { xs: 11, sm: 13, md: 13 },
+                          fontWeight: 500,
+                        }}
+                      >
+                        FROM
+                      </Typography>
+                      <Typography
+                        sx={{
+                          width: "100%",
+                          textAlign: "center",
+                          color: "var(--secondary-color)",
+                          fontSize: { xs: 20, sm: 25, md: 40 },
+                          fontWeight: { xs: 500, sm: 500, md: 500 },
+                        }}
+                      >
+                        {fromSendData}
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        height: "30px",
+                        display: "flex",
+                        alignItems: "center",
+                        borderRadius: "4px",
+                        overflow: "hidden",
+                        mt: { xs: 0, sm: 0, md: 2 },
+                      }}
+                      onClick={() => {
+                        setOpenFrom((prev) => !prev);
+                        setOpenTo(false);
+                        setOpenDate(false);
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "15%",
+                          height: "100%",
+                          background: "var(--secondary-color)",
+                          color: "var(--input-bgcolor)",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <FmdGoodOutlinedIcon
+                          sx={{ fontSize: { xs: 20, sm: 20, md: 24 } }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          width: "calc(85% - 10px)",
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          background: "var(--input-bgcolor)",
+                          paddingLeft: "10px",
+                        }}
+                      >
+                        <Typography
+                          style={{
+                            width: "100%",
+                            color: "var(--primary-color)",
+                            fontSize: "13px",
+                            fontWeight: 400,
+                          }}
+                          noWrap
+                        >
+                          {fromSearchText}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        height: "30px",
+                        display: "flex",
+                        alignItems: "center",
+                        borderRadius: "4px",
+                        overflow: "hidden",
+                        mt: 1,
+                      }}
+                      onClick={() => {
+                        setTimeout(() => setOpenDate((prev) => !prev), 200);
+                        setOpenFrom(false);
+                        setOpenTo(false);
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "15%",
+                          height: "100%",
+                          background: "var(--secondary-color)",
+                          color: "var(--input-bgcolor)",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <CalendarMonthOutlinedIcon
+                          sx={{ fontSize: { xs: 20, sm: 20, md: 24 } }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          width: "calc(85% - 10px)",
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          background: "var(--input-bgcolor)",
+                          paddingLeft: "10px",
+                        }}
+                      >
+                        <Typography
+                          style={{
+                            width: "100%",
+                            color: "var(--primary-color)",
+                            fontSize: "13px",
+                            fontWeight: 400,
+                          }}
+                          noWrap
+                        >
+                          {`${format(new Date(from), "dd MMM yy")}`}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                <Collapse
+                  in={openFrom}
+                  timeout="auto"
+                  unmountOnExit
+                  sx={{ width: "100%" }}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "80%",
+                      left: "0",
+                      right: "0",
+                      width: "96%",
+                      backgroundColor: "var( --secondary-color)",
+                      height: "fit-content",
+                      borderBottom: "1px solid var(  --input-bgcolor)",
+                      borderLeft: "1px solid var(  --input-bgcolor)",
+                      borderRight: "2px solid var(  --input-bgcolor)",
+                      borderRadius: "0px 0px 5px 5px",
+                      zIndex: "999",
+                      padding: "3px 5px 0px",
+                    }}
+                  >
+                    <Box
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color: "var(--secondary-color)",
+                        zIndex: 10,
+                      }}
+                      backgroundColor="#fff"
+                    >
+                      <input
+                        autoComplete="off"
+                        autoFocus
+                        onChange={formOnChange}
+                        placeholder="Search a airport..."
+                        className="customPlaceholder"
+                        style={{
+                          color: "var(--secondary-color)",
+                          fontWeight: 400,
+                          paddingLeft: "10px",
+                          width: "100%",
+                          height: "40px",
+                          backgroundColor: "transparent",
+                          border: "none",
+                          outline: "none",
+                        }}
+                      />
+                    </Box>
+                    <Box>{fromGetSuggetion()}</Box>
+                  </Box>
+                </Collapse>
+
+                <Collapse
+                  in={openDate}
+                  timeout="auto"
+                  unmountOnExit
+                  sx={{ width: "100%" }}
+                >
+                  <Box>
+                    <Calendar
+                      color="var(--secondary-color)"
+                      date={new Date(from)}
+                      onChange={handleSelect}
+                      months={1}
+                      direction="horizontal"
+                      minDate={new Date()}
+                      className={"dashboard-calendar"}
+                    />
+                  </Box>
+                </Collapse>
+              </Grid>
+              {/* //todo:Flight Icon */}
+              <Grid
+                item
+                xs={6}
+                sm={6}
+                md={3}
+                sx={{ position: "relative" }}
+                display={{ xs: "none", sm: "none", md: "block" }}
+              >
+                <Grow
+                  in={tripType}
+                  timeout={400}
+                  unmountOnExit
+                  sx={{ width: "100%" }}
+                >
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItem: "center",
+                    }}
+                  >
+                    <FlightOutlinedIcon
+                      sx={{
+                        position: "absolute",
+                        top: "0px",
+                        left: "20%",
+                        fontSize: "100px",
+                        color: "var(--secondary-color)",
+                        transform: "rotate(90deg) ",
+                      }}
+                    />
+                  </Box>
+                </Grow>
+              </Grid>
+              {/* //todo: Arrival City section */}
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={4.5}
+                style={{
+                  position: "relative",
+                  height: "fit-content",
+                }}
+              >
+                <Box
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <Box
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "3px",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          width: "100%",
+                          textAlign: "center",
+                          color: "var(--text-color)",
+                          fontSize: { xs: 11, sm: 13, md: 13 },
+                          fontWeight: 500,
+                        }}
+                      >
+                        TO
+                      </Typography>
+                      <Typography
+                        sx={{
+                          width: "100%",
+                          textAlign: "center",
+                          color: "var(--secondary-color)",
+                          fontSize: { xs: 20, sm: 25, md: 40 },
+                          fontWeight: { xs: 500, sm: 500, md: 500 },
+                        }}
+                      >
+                        {toSendData}
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        height: "30px",
+                        display: "flex",
+                        alignItems: "center",
+                        borderRadius: "4px",
+                        overflow: "hidden",
+                        mt: { xs: 0, sm: 1, md: 2 },
+                      }}
+                      onClick={() => {
+                        setOpenFrom(false);
+                        setOpenTo((prev) => !prev);
+                        setOpenDate(false);
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "15%",
+                          height: "100%",
+                          background: "var(--secondary-color)",
+                          color: "var(--input-bgcolor)",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <FmdGoodOutlinedIcon
+                          sx={{ fontSize: { xs: 20, sm: 20, md: 24 } }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          width: "calc(85% - 10px)",
+                          height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          background: "var(--input-bgcolor)",
+                          paddingLeft: "10px",
+                        }}
+                      >
+                        <Typography
+                          style={{
+                            width: "100%",
+                            color: "var(--primary-color)",
+                            fontSize: "13px",
+                            fontWeight: 400,
+                          }}
+                          noWrap
+                        >
+                          {toSearchText}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                <Collapse
+                  in={openTo}
+                  timeout="auto"
+                  unmountOnExit
+                  sx={{ width: "100%" }}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "105%",
+                      left: "0",
+                      width: "96%",
+                      backgroundColor: "var( --secondary-color)",
+                      height: "fit-content",
+                      borderBottom: "1px solid var(  --input-bgcolor)",
+                      borderLeft: "1px solid var(  --input-bgcolor)",
+                      borderRight: "2px solid var(  --input-bgcolor)",
+                      borderRadius: "0px 0px 5px 5px",
+                      zIndex: "999",
+                      padding: "5px 5px 0",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color: "var(--secondary-color)",
+                        zIndex: 10,
+                      }}
+                      backgroundColor="var(--white)"
+                    >
+                      <input
+                        autoComplete="off"
+                        autoFocus
+                        onChange={toOnChange}
+                        className="customPlaceholder"
+                        placeholder="Search a airport..."
+                        style={{
+                          color: "var(--secondary-color)",
+                          fontWeight: 400,
+                          paddingLeft: "10px",
+                          width: "100%",
+                          height: "40px",
+                          backgroundColor: "transparent",
+                          border: "none",
+                          outline: "none",
+                        }}
+                      />
+                    </Box>
+                    <Box>{toGetSuggetion()}</Box>
+                  </Box>
+                </Collapse>
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+      </Grow>
+    </ClickAwayListener>
+  );
+};
+
+export default Oneway;
