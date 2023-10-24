@@ -6,6 +6,8 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import Main from "./Components/Main/Main";
 import Home from "./Components/Home/Home";
+import OnewayAfterSearch from "./Components/OnewayAfterSearch/OnewayAfterSearch";
+import RoundwayAfterSearch from "./Components/RoundwayAfterSearch/RoundwayAfterSearch";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -14,6 +16,14 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/onewayaftersearch",
+        element: <OnewayAfterSearch />,
+      },
+      {
+        path: "/roundwayaftersearch",
+        element: <RoundwayAfterSearch />,
       },
     ],
   },

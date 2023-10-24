@@ -1,30 +1,37 @@
-import styled from "@emotion/styled";
-import { Box } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import flightData from "./flightData.js";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import Oneway from "./Oneway/Oneway.js";
+import Roundway from "./Roundway/Roundway.js";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
+import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
-import BookFlight from "./BookFlight/BookFlight";
-import GroupFare from "./GroupFare/GroupFare";
-import TourPackage from "./TourPackage/TourPackage";
-import Umrah from "./Umrah/Umrah";
-import Visa from "./Visa/Visa";
-const SearchBox = () => {
-  let SearchDiv = styled(Box)({});
+const HomeSearch = () => {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [selectedRadioValue, setSelectedRadioValue] = useState("One Way");
 
+  const handleRadioChange = (event) => {
+    setSelectedRadioValue(event.target.value);
+  };
   return (
-    <>
+    <Box>
       <Box sx={{ width: "100%", typography: "body1" }}>
         <TabContext value={value}>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -151,27 +158,87 @@ const SearchBox = () => {
           </Box>
         </TabContext>
       </Box>
-      <SearchDiv sx={{ bgcolor: "var(--white-color)" }}>
+
+      <Box sx={{ bgcolor: "var(--white-color)", borderRadius: "10px" }}>
         <TabContext value={value}>
           <TabPanel value="1">
-            <BookFlight />
+            <FormControl sx={{ marginBottom: "23px" }}>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={selectedRadioValue}
+                onChange={handleRadioChange}
+              >
+                <FormControlLabel
+                  value="One Way"
+                  control={
+                    <Radio
+                      sx={{
+                        "&.Mui-checked": {
+                          color: "var(--purple-color)",
+                        },
+                      }}
+                    />
+                  }
+                  sx={{ color: "var( --grey-color)" }}
+                  label={
+                    <Typography sx={{ fontSize: "15px", fontWeight: "700" }}>
+                      One Way
+                    </Typography>
+                  }
+                />
+                <FormControlLabel
+                  value="Round Way"
+                  control={
+                    <Radio
+                      sx={{
+                        "&.Mui-checked": {
+                          color: "var(--purple-color)",
+                        },
+                      }}
+                    />
+                  }
+                  sx={{ color: "var( --grey-color)" }}
+                  label={
+                    <Typography sx={{ fontSize: "15px", fontWeight: "700" }}>
+                      Round Way
+                    </Typography>
+                  }
+                />
+                <FormControlLabel
+                  value="Multi City"
+                  control={
+                    <Radio
+                      sx={{
+                        "&.Mui-checked": {
+                          color: "var(--purple-color)",
+                        },
+                      }}
+                    />
+                  }
+                  sx={{ color: "var( --grey-color)" }}
+                  label={
+                    <Typography sx={{ fontSize: "15px", fontWeight: "700" }}>
+                      Multi City
+                    </Typography>
+                  }
+                />
+              </RadioGroup>
+            </FormControl>
+            {selectedRadioValue === "One Way" && (
+              <Oneway setSelectedRadioValue={setSelectedRadioValue} />
+            )}
+            {selectedRadioValue === "Round Way" && <Roundway />}
           </TabPanel>
-          <TabPanel value="2">
-            <GroupFare />
-          </TabPanel>
-          <TabPanel value="3">
-            <TourPackage />
-          </TabPanel>
-          <TabPanel value="4">
-            <Umrah />
-          </TabPanel>
-          <TabPanel value="5">
-            <Visa />
-          </TabPanel>
+          <TabPanel value="2">Item Two</TabPanel>
+          <TabPanel value="3">Item Three</TabPanel>
+          <TabPanel value="4">Item four</TabPanel>
+          <TabPanel value="5">Item Five</TabPanel>
         </TabContext>
-      </SearchDiv>
-    </>
+      </Box>
+    </Box>
   );
 };
 
-export default SearchBox;
+export default HomeSearch;
