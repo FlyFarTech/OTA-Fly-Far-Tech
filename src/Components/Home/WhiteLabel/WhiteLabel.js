@@ -4,7 +4,7 @@ import Blank from "./blank.png";
 
 const WhiteLabel = () => {
   return (
-    <Container sx={{ marginTop: "150px" }}>
+    <Box sx={{ marginTop: "150px !important", margin: "0 auto", width: "84%" }}>
       <Grid container spacing={8}>
         <Grid item xs={12} lg={6}>
           <img src={Blank} style={{ width: "100%" }} alt="blank" />
@@ -66,7 +66,7 @@ const WhiteLabel = () => {
           </Box>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 };
 

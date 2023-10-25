@@ -20,11 +20,14 @@ const Header = () => {
   return (
     <>
       <Navbar>
-        <Container
+        <Box
           sx={{
+            width: "84%",
+            margin: "0 auto",
             display: "flex",
             justifyContent: "space-between",
 
+            flexDirection: { xs: "column", sm: "row" },
             alignItems: "center",
           }}
         >
@@ -34,7 +37,7 @@ const Header = () => {
             </Logo>
           </Link>
 
-          <HeaderButtons>
+          <HeaderButtons sx={{ marginTop: { xs: "12px", sm: "" } }}>
             <Button
               variant="contained"
               sx={{
@@ -58,7 +61,7 @@ const Header = () => {
               Sign In
             </Button>
           </HeaderButtons>
-        </Container>
+        </Box>
       </Navbar>
     </>
   );

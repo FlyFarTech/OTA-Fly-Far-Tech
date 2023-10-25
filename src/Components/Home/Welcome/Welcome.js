@@ -3,7 +3,7 @@ import React from "react";
 import Plane from "./plane.png";
 const Welcome = () => {
   return (
-    <Container>
+    <Box sx={{ width: "84%", margin: "0 auto" }}>
       <Box sx={{ marginTop: "67px" }}>
         <Box>
           <Typography
@@ -34,7 +34,7 @@ const Welcome = () => {
       <Box sx={{ textAlign: "center", marginTop: "54px" }}>
         <img src={Plane} alt="plane" style={{ width: "100%" }} />
       </Box>
-    </Container>
+    </Box>
   );
 };
 

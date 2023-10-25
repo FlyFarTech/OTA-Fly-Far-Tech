@@ -24,11 +24,11 @@ const Footer = () => {
             zIndex: "50",
           }}
         >
-          <Container>
+          <Box sx={{ width: "84%", margin: "0 auto" }}>
             <FooterContactus />
-          </Container>
+          </Box>
         </Box>
-        <Container>
+        <Box sx={{ width: "84%", margin: "0 auto" }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={6} lg={2.5}>
               <Box>
@@ -400,7 +400,7 @@ const Footer = () => {
               />
             </Box>
           </Box>
-        </Container>
+        </Box>
       </Box>
     </footer>
   );

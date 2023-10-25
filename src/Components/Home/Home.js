@@ -16,23 +16,56 @@ const Home = () => {
     backgroundImage: `url(${BannerImage})`,
     backgroundPosition: "top",
     backgroundRepeat: "no-repeat",
-    height: "564px",
-    clipPath: "polygon(0% 0%, 100% 0%, 100% 72.08%, 50% 100%, 0% 72.58%)",
-    paddingTop: "107px",
+    backgroundSize: "cover",
   });
 
   return (
     <>
-      <Banner>
-        <Container>
+      <Box sx={{ position: "relative" }}>
+        <Box
+          sx={{
+            display: { xs: "none", sm: "none", md: "block" },
+            position: "absolute",
+            zIndex: "50",
+            left: "0%",
+            right: "0%",
+            paddingTop: "107px",
+            width: "84%",
+            margin: "0 auto",
+          }}
+        >
           <HomeSearch />
-        </Container>
-      </Banner>
-      <Welcome />
-      <TravelPortal />
-      <FullTravel />
-      <WhiteLabel />
-      <Map />
+        </Box>
+
+        <Banner
+          sx={{
+            clipPath: {
+              xs: "0",
+              sm: "polygon(0% 0%, 100% 0%, 100% 72.08%, 50% 100%, 0% 72.58%)",
+            },
+
+            height: { xs: "900px", sm: "740px", md: "700px", lg: "654px" },
+            paddingTop: {
+              xs: "76px",
+              sm: "107px",
+              md: "0px",
+            },
+          }}
+        >
+          <Container
+            sx={{
+              display: { xs: "block", md: "none" },
+            }}
+          >
+            <HomeSearch />
+          </Container>
+        </Banner>
+        <Welcome />
+        <TravelPortal />
+        <FullTravel />
+        <WhiteLabel />
+        <Map />
+      </Box>
     </>
   );
 };

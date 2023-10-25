@@ -3,7 +3,9 @@ import React from "react";
 import Blank from "./blank.png";
 const TravelPortal = () => {
   return (
-    <Container sx={{ marginTop: "177px" }}>
+    <Box
+      sx={{ marginTop: "164px !important", margin: " 0  auto", width: "84%" }}
+    >
       <Grid container spacing={8}>
         <Grid item xs={12} lg={6}>
           <img src={Blank} style={{ width: "100%" }} alt="blank" />
@@ -65,7 +67,7 @@ const TravelPortal = () => {
           </Box>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 };
 

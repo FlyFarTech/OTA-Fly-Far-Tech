@@ -40,7 +40,7 @@ const AfterSearchBox = () => {
         paddingBottom: "21px",
       }}
     >
-      <Container>
+      <Box sx={{ width: "84%", margin: "0 auto" }}>
         <FormControl>
           <RadioGroup
             row
@@ -137,7 +137,7 @@ const AfterSearchBox = () => {
                 </Typography>
               </Box>
 
-              <Box
+              {/* <Box
                 sx={{
                   bgcolor: "var(--white-color)",
                   position: "absolute",
@@ -188,7 +188,7 @@ const AfterSearchBox = () => {
                     </Typography>
                   </Box>
                 ))}
-              </Box>
+              </Box> */}
             </Grid>
             <Box
               onClick={() => setIsToggle(!isToggle)}
@@ -207,7 +207,7 @@ const AfterSearchBox = () => {
               <Box
                 sx={{
                   border: "1px solid var(--grey-color)",
-                  paddingLeft: "14px",
+                  paddingLeft: "10px",
                   paddingTop: "8px",
                   paddingBottom: "15px",
                   borderRadius: "5px",
@@ -379,7 +379,7 @@ const AfterSearchBox = () => {
             </Grid>
           </Grid>
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 };

@@ -4,7 +4,9 @@ import Blank from "./blank.png";
 const FullTravel = () => {
   return (
     <>
-      <Container sx={{ marginTop: "144px" }}>
+      <Box
+        sx={{ marginTop: "144px !important", margin: "0 auto", width: "84%" }}
+      >
         <Grid container spacing={8}>
           <Grid item xs={12} lg={6}>
             <Box>
@@ -68,7 +70,7 @@ const FullTravel = () => {
             <img src={Blank} style={{ width: "100%" }} alt="blank" />
           </Grid>
         </Grid>
-      </Container>
+      </Box>
     </>
   );
 };
