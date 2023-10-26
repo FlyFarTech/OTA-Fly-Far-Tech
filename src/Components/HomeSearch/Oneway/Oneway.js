@@ -22,9 +22,10 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import { ReactComponent as Front } from "./../front.svg";
 import { ReactComponent as Back } from "./../back.svg";
+import { useNavigate } from "react-router-dom";
 const Oneway = ({ setSelectedRadioValue }) => {
   const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
-
+  const navigate = useNavigate();
   const handleInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -44,7 +45,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
   const [flightClass, setFlightClass] = useState("Economy");
-  console.log(flightClass);
+
   let totalPassenger =
     parseInt(adultCount) + parseInt(childCount) + parseInt(infantCount);
   // on off area
@@ -61,6 +62,20 @@ const Oneway = ({ setSelectedRadioValue }) => {
     setIsArrival(false);
     setIsTravelDate(false);
     setIsPassenger(false);
+  };
+
+  let handleOneWayASearch = () => {
+    navigate("/onewayaftersearch", {
+      state: {
+        departureCode,
+        arrivalCode,
+        checkInDate: checkInDate.format("YYYY-MM-DD"),
+        adultCount,
+        childCount,
+        infantCount,
+        flightClass,
+      },
+    });
   };
   return (
     <ClickAwayListener onClickAway={handleOutsideClick}>
@@ -308,6 +323,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
                   <Box
                     onClick={() => {
                       setArrivalCode(result?.code);
+                      // setArrivalCode(result?.code);
                       setArrCode(result?.code);
 
                       setIsArrival(false);
@@ -815,6 +831,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
           </Box>
           <Box>
             <Button
+              onClick={handleOneWayASearch}
               variant="contained"
               sx={{
                 boxShadow: "none",
