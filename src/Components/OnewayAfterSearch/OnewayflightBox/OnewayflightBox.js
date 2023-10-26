@@ -746,7 +746,7 @@ const OnewayflightBox = ({ flight }) => {
               </FlgihtDetails>
             )}
             {/* fare details */}
-            {activeTab === "fareDetails" && <FareDetails />}
+            {activeTab === "fareDetails" && <FareDetails flight={flight} />}
 
             {/* fare Commission*/}
             {activeTab === "fareCommission" && <FareComission />}

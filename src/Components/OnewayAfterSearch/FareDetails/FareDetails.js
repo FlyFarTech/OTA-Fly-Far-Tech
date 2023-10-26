@@ -7,7 +7,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, Typography } from "@mui/material";
-const FareDetails = () => {
+
+const FareDetails = ({ flight }) => {
+  const calculateSubtotal = (price) => {
+    return (
+      parseInt(price.PaxCount) *
+        (parseInt(price.BaseFare) +
+          parseInt(price.Tax) +
+          parseInt(price.ServiceFee)) || 0
+    );
+  };
   return (
     <>
       <Box sx={{ marginTop: "34px" }}>
@@ -17,11 +26,7 @@ const FareDetails = () => {
         >
           <Table size="small" aria-label="a dense table">
             <TableHead>
-              <TableRow
-                sx={{
-                  bgcolor: "var(--purple-color)",
-                }}
-              >
+              <TableRow sx={{ bgcolor: "var(--purple-color)" }}>
                 <TableCell
                   sx={{
                     bgcolor: "var(--grey-color)",
@@ -31,24 +36,14 @@ const FareDetails = () => {
                 >
                   Pax Type
                 </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "var( --white-color)", fontSize: "11px" }}
-                >
-                  Adult
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "var( --white-color)", fontSize: "11px" }}
-                >
-                  Child
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "var( --white-color)", fontSize: "11px" }}
-                >
-                  Infant
-                </TableCell>
+                {flight?.pricebreakdown?.map((price) => (
+                  <TableCell
+                    align="center"
+                    sx={{ color: "var(--white-color)", fontSize: "11px" }}
+                  >
+                    {price?.PaxType}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -64,9 +59,14 @@ const FareDetails = () => {
                 >
                   Pax Count
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.pricebreakdown?.map((price) => (
+                  <TableCell
+                    align="center"
+                    sx={{ color: "var(--grey-color)", fontSize: "11px" }}
+                  >
+                    {parseInt(price?.PaxCount)}
+                  </TableCell>
+                ))}
               </TableRow>
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -80,9 +80,14 @@ const FareDetails = () => {
                 >
                   Base Fare
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.pricebreakdown?.map((price) => (
+                  <TableCell
+                    align="center"
+                    sx={{ color: "var(--grey-color)", fontSize: "11px" }}
+                  >
+                    {parseInt(price?.BaseFare)}
+                  </TableCell>
+                ))}
               </TableRow>
 
               <TableRow
@@ -97,9 +102,14 @@ const FareDetails = () => {
                 >
                   TAX
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.pricebreakdown?.map((price) => (
+                  <TableCell
+                    align="center"
+                    sx={{ color: "var(--grey-color)", fontSize: "11px" }}
+                  >
+                    {parseInt(price?.Tax)}
+                  </TableCell>
+                ))}
               </TableRow>
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -113,9 +123,14 @@ const FareDetails = () => {
                 >
                   Service Fee
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.pricebreakdown?.map((price) => (
+                  <TableCell
+                    align="center"
+                    sx={{ color: "var(--grey-color)", fontSize: "11px" }}
+                  >
+                    {parseInt(price?.ServiceFee)}
+                  </TableCell>
+                ))}
               </TableRow>
 
               <TableRow
@@ -130,9 +145,14 @@ const FareDetails = () => {
                 >
                   Subtotal
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.pricebreakdown?.map((price) => (
+                  <TableCell
+                    align="center"
+                    sx={{ color: "var(--grey-color)", fontSize: "11px" }}
+                  >
+                    {calculateSubtotal(price)}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableBody>
           </Table>
@@ -170,7 +190,7 @@ const FareDetails = () => {
           </Box>
           <Box>
             <Typography sx={{ fontSize: "12px", color: "var(--grey-color)" }}>
-              BDT 54,000
+              BDT {calculateSubtotal(flight.pricebreakdown[0])}
             </Typography>
             <Typography
               sx={{
