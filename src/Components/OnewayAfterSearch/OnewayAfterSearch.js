@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import AfterSearchBox from "../AfterSearchBox/AfterSearchBox";
 import AirSearchFilter from "../AirSearchFilter/AirSearchFilter";
 import OnewayflightBox from "./OnewayflightBox/OnewayflightBox";
@@ -18,11 +18,10 @@ const OnewayAfterSearch = () => {
   let adultCount = location?.state?.adultCount;
   let childCount = location?.state?.childCount;
   let infantCount = location?.state?.childCount;
-  console.log(arrivalCode);
 
   useEffect(() => {
     fetch(
-      `https://api.flyfarint.com/v.1.0.0/WhiteLabel/AirSearch/oneway.php?tripType=oneway&agentId=FFA2654&subagentId=FFSA1859&journeyfrom=${departureCode}&journeyto=${arrivalCode}&departuredate=${departureDate}&adult=${adultCount}&child=${childCount}&infant=${infantCount}`
+      `https://quickticketsb2b-nodejs.de.r.appspot.com/api/v1/search-results?type=oneway&arr=${arrivalCode}&dep=${departureCode}&depdate=${departureDate}&adult=${adultCount}&child=${childCount}&infant=${infantCount}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -47,15 +46,16 @@ const OnewayAfterSearch = () => {
 
       <Box
         sx={{
-          width: "84%",
+          width: "70%",
 
           marginLeft: "auto",
           marginRight: "auto",
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={12} lg={2.5}>
             {/* filter search area */}
+            <Box>sadf</Box>
           </Grid>
           <Grid item xs={12} lg={9}>
             {/*All flights area */}

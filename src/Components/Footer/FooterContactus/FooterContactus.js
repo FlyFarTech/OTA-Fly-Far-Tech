@@ -13,7 +13,7 @@ const FooterContactus = () => {
     >
       <Container>
         <Grid container spacing={2}>
-          <Grid item xs={12} lg={9}>
+          <Grid item xs={12} lg={8}>
             <Box>
               <Typography sx={{ fontSize: "30px", fontWeight: "700" }}>
                 Make Your Travel OTA Portal Today{" "}
@@ -28,7 +28,7 @@ const FooterContactus = () => {
           <Grid
             item
             xs={12}
-            lg={3}
+            lg={4}
             sx={{
               display: "flex",
               justifyContent: "center",

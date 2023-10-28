@@ -4,14 +4,14 @@ import Blank from "./blank.png";
 
 const WhiteLabel = () => {
   return (
-    <Box sx={{ marginTop: "150px !important", margin: "0 auto", width: "84%" }}>
+    <Box sx={{ marginTop: "150px !important", margin: "0 auto", width: "70%" }}>
       <Grid container spacing={8}>
         <Grid item xs={12} lg={6}>
           <img src={Blank} style={{ width: "100%" }} alt="blank" />
         </Grid>
         <Grid item xs={12} lg={6}>
           <Box>
-            <Typography sx={{ fontSize: "45px", fontWeight: "700" }}>
+            <Typography sx={{ fontSize: "40px", fontWeight: "700" }}>
               White Label{" "}
               <span style={{ color: "var(--purple-color)" }}>OTA Portal</span>
             </Typography>

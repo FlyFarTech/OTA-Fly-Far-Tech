@@ -30,7 +30,7 @@ const Home = () => {
             left: "0%",
             right: "0%",
             paddingTop: "107px",
-            width: "84%",
+            width: "70%",
             margin: "0 auto",
           }}
         >

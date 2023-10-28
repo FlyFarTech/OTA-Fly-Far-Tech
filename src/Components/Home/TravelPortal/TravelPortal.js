@@ -4,7 +4,7 @@ import Blank from "./blank.png";
 const TravelPortal = () => {
   return (
     <Box
-      sx={{ marginTop: "164px !important", margin: " 0  auto", width: "84%" }}
+      sx={{ marginTop: "164px !important", margin: " 0  auto", width: "70%" }}
     >
       <Grid container spacing={8}>
         <Grid item xs={12} lg={6}>
@@ -12,7 +12,7 @@ const TravelPortal = () => {
         </Grid>
         <Grid item xs={12} lg={6}>
           <Box>
-            <Typography sx={{ fontSize: "45px", fontWeight: "700" }}>
+            <Typography sx={{ fontSize: "40px", fontWeight: "700" }}>
               Travel Portal{" "}
               <span style={{ color: "var(--purple-color)" }}>API</span>
             </Typography>

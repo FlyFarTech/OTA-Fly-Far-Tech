@@ -22,7 +22,7 @@ const Header = () => {
       <Navbar>
         <Box
           sx={{
-            width: "84%",
+            width: "70%",
             margin: "0 auto",
             display: "flex",
             justifyContent: "space-between",

@@ -11,12 +11,22 @@ import { Box, Typography } from "@mui/material";
 const FareDetails = ({ flight }) => {
   const calculateSubtotal = (price) => {
     return (
-      parseInt(price.PaxCount) *
-        (parseInt(price.BaseFare) +
+      parseInt(price.paxCount) *
+        (parseInt(price.baseFare) +
           parseInt(price.Tax) +
           parseInt(price.ServiceFee)) || 0
     );
   };
+
+  const grandTotal = flight?.priceBreakdown.reduce((total, price) => {
+    return total + calculateSubtotal(price);
+  }, 0);
+
+  const totalDiscount = flight?.priceBreakdown.reduce((total, price) => {
+    return total + parseInt(price.Discount) || 0;
+  }, 0);
+
+  const agentPayable = grandTotal - totalDiscount;
   return (
     <>
       <Box sx={{ marginTop: "34px" }}>
@@ -36,12 +46,13 @@ const FareDetails = ({ flight }) => {
                 >
                   Pax Type
                 </TableCell>
-                {flight?.pricebreakdown?.map((price) => (
+                {flight?.priceBreakdown?.map((price, index) => (
                   <TableCell
+                    key={index}
                     align="center"
                     sx={{ color: "var(--white-color)", fontSize: "11px" }}
                   >
-                    {price?.PaxType}
+                    {price?.paxType}
                   </TableCell>
                 ))}
               </TableRow>
@@ -59,12 +70,13 @@ const FareDetails = ({ flight }) => {
                 >
                   Pax Count
                 </TableCell>
-                {flight?.pricebreakdown?.map((price) => (
+                {flight?.priceBreakdown?.map((price, index) => (
                   <TableCell
+                    key={index}
                     align="center"
                     sx={{ color: "var(--grey-color)", fontSize: "11px" }}
                   >
-                    {parseInt(price?.PaxCount)}
+                    {parseInt(price?.paxCount).toLocaleString()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -80,12 +92,13 @@ const FareDetails = ({ flight }) => {
                 >
                   Base Fare
                 </TableCell>
-                {flight?.pricebreakdown?.map((price) => (
+                {flight?.priceBreakdown?.map((price, index) => (
                   <TableCell
+                    key={index}
                     align="center"
                     sx={{ color: "var(--grey-color)", fontSize: "11px" }}
                   >
-                    {parseInt(price?.BaseFare)}
+                    {parseInt(price?.baseFare).toLocaleString()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -102,12 +115,13 @@ const FareDetails = ({ flight }) => {
                 >
                   TAX
                 </TableCell>
-                {flight?.pricebreakdown?.map((price) => (
+                {flight?.priceBreakdown?.map((price, index) => (
                   <TableCell
+                    key={index}
                     align="center"
                     sx={{ color: "var(--grey-color)", fontSize: "11px" }}
                   >
-                    {parseInt(price?.Tax)}
+                    {parseInt(price?.Tax).toLocaleString()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -123,12 +137,13 @@ const FareDetails = ({ flight }) => {
                 >
                   Service Fee
                 </TableCell>
-                {flight?.pricebreakdown?.map((price) => (
+                {flight?.priceBreakdown?.map((price, index) => (
                   <TableCell
+                    key={index}
                     align="center"
                     sx={{ color: "var(--grey-color)", fontSize: "11px" }}
                   >
-                    {parseInt(price?.ServiceFee)}
+                    {parseInt(price?.ServiceFee).toLocaleString()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -145,12 +160,13 @@ const FareDetails = ({ flight }) => {
                 >
                   Subtotal
                 </TableCell>
-                {flight?.pricebreakdown?.map((price) => (
+                {flight?.priceBreakdown?.map((price, index) => (
                   <TableCell
+                    key={index}
                     align="center"
                     sx={{ color: "var(--grey-color)", fontSize: "11px" }}
                   >
-                    {calculateSubtotal(price)}
+                    {calculateSubtotal(price).toLocaleString()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -190,7 +206,7 @@ const FareDetails = ({ flight }) => {
           </Box>
           <Box>
             <Typography sx={{ fontSize: "12px", color: "var(--grey-color)" }}>
-              BDT {calculateSubtotal(flight.pricebreakdown[0])}
+              BDT {grandTotal.toLocaleString()}
             </Typography>
             <Typography
               sx={{
@@ -199,7 +215,7 @@ const FareDetails = ({ flight }) => {
                 fontSize: "12px",
               }}
             >
-              BDT 4,000{" "}
+              BDT {totalDiscount.toLocaleString()}
             </Typography>
             <Typography
               sx={{
@@ -208,7 +224,7 @@ const FareDetails = ({ flight }) => {
                 fontSize: "12px",
               }}
             >
-              BDT 50,000
+              BDT {agentPayable.toLocaleString()}
             </Typography>
           </Box>
         </Box>

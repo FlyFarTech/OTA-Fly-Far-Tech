@@ -1,7 +1,8 @@
+import { Box } from "@mui/material";
 import React from "react";
 
 const AirSearchFilter = () => {
-  return <div>asdfasdf</div>;
+  return <Box sx={{ bgcolor: "var(--white-color)" }}></Box>;
 };
 
 export default AirSearchFilter;

@@ -22,8 +22,10 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import dayjs from "dayjs";
 import { ReactComponent as Front } from "./../front.svg";
 import { ReactComponent as Back } from "./../back.svg";
-import { set } from "lodash";
+
+import { useNavigate } from "react-router-dom";
 const Roundway = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
 
   const handleInputChange = (event) => {
@@ -65,6 +67,21 @@ const Roundway = () => {
     setIsTravelDate(false);
     setIsPassenger(false);
     setIsReturnDate(false);
+  };
+
+  let handleRoundWaySearch = () => {
+    navigate("/roundwayaftersearch", {
+      state: {
+        departureCode,
+        arrivalCode,
+        checkInDate: checkInDate.format("YYYY-MM-DD"),
+        checkOutDate: checkOutDate.format("YYYY-MM-DD"),
+        adultCount,
+        childCount,
+        infantCount,
+        flightClass,
+      },
+    });
   };
   return (
     <ClickAwayListener onClickAway={handleOutsideClick}>
@@ -854,6 +871,7 @@ const Roundway = () => {
                 fontSize: "15px",
               }}
               startIcon={<SendIcon sx={{ transform: "rotate(-50deg)" }} />}
+              onClick={handleRoundWaySearch}
             >
               Search
             </Button>

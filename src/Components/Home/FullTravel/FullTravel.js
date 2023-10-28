@@ -5,12 +5,12 @@ const FullTravel = () => {
   return (
     <>
       <Box
-        sx={{ marginTop: "144px !important", margin: "0 auto", width: "84%" }}
+        sx={{ marginTop: "144px !important", margin: "0 auto", width: "70%" }}
       >
         <Grid container spacing={8}>
           <Grid item xs={12} lg={6}>
             <Box>
-              <Typography sx={{ fontSize: "45px", fontWeight: "700" }}>
+              <Typography sx={{ fontSize: "40px", fontWeight: "700" }}>
                 <span style={{ color: "var(--purple-color)" }}>
                   Full Travel{" "}
                 </span>

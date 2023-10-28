@@ -16,7 +16,7 @@ const FarePolicy = () => {
     <Box sx={{ marginTop: "34px" }}>
       <Box>
         <Grid container spacing={0}>
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={3} lg={3}>
             <Box
               sx={{
                 bgcolor: "var(--grey-color )",
@@ -29,7 +29,7 @@ const FarePolicy = () => {
               <Typography sx={{ fontSize: "11px" }}>Policy Name </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} lg={9}>
+          <Grid item xs={9} lg={9}>
             <Box
               sx={{
                 bgcolor: "var(--purple-color)",
@@ -48,7 +48,7 @@ const FarePolicy = () => {
       </Box>
       <Box>
         <Grid container spacing={0}>
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={3} lg={3}>
             <Box
               sx={{
                 bgcolor: "var(--grey-color )",
@@ -61,7 +61,7 @@ const FarePolicy = () => {
               <Typography sx={{ fontSize: "11px" }}>Cancellation </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} lg={9}>
+          <Grid item xs={9} lg={9}>
             <Box
               sx={{
                 bgcolor: "var(--white-color)",
@@ -79,7 +79,7 @@ const FarePolicy = () => {
       </Box>
       <Box>
         <Grid container spacing={0}>
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={3} lg={3}>
             <Box
               sx={{
                 bgcolor: "var(--grey-color )",
@@ -92,7 +92,7 @@ const FarePolicy = () => {
               <Typography sx={{ fontSize: "11px" }}>Re-Issue</Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} lg={9}>
+          <Grid item xs={9} lg={9}>
             <Box
               sx={{
                 bgcolor: "var(--white-color)",
@@ -110,7 +110,7 @@ const FarePolicy = () => {
       </Box>
       <Box>
         <Grid container spacing={0}>
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={3} lg={3}>
             <Box
               sx={{
                 bgcolor: "var(--grey-color )",
@@ -123,7 +123,7 @@ const FarePolicy = () => {
               <Typography sx={{ fontSize: "11px" }}>Refund</Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} lg={9}>
+          <Grid item xs={9} lg={9}>
             <Box
               sx={{
                 bgcolor: "var(--white-color)",
@@ -141,7 +141,7 @@ const FarePolicy = () => {
       </Box>
       <Box>
         <Grid container spacing={0}>
-          <Grid item xs={12} lg={3}>
+          <Grid item xs={3} lg={3}>
             <Box
               sx={{
                 bgcolor: "var(--grey-color )",
@@ -154,7 +154,7 @@ const FarePolicy = () => {
               <Typography sx={{ fontSize: "11px" }}>Void </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} lg={9}>
+          <Grid item xs={9} lg={9}>
             <Box
               sx={{
                 bgcolor: "var(--white-color)",

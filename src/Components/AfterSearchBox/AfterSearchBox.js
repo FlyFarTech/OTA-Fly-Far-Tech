@@ -40,7 +40,7 @@ const AfterSearchBox = () => {
         paddingBottom: "21px",
       }}
     >
-      <Box sx={{ width: "84%", margin: "0 auto" }}>
+      <Box sx={{ width: "70%", margin: "0 auto" }}>
         <FormControl>
           <RadioGroup
             row
@@ -364,12 +364,13 @@ const AfterSearchBox = () => {
               </Box>
             </Grid>
             <Grid item xs={12} md={6} lg={0.8}>
-              <Box sx={{ height: "100%" }}>
+              <Box sx={{ height: "100%", width: "100%" }}>
                 <Button
                   variant="contained"
                   sx={{
                     background: "var(--dark-color)",
                     height: "100%",
+                    width: "100%",
                     boxShadow: "none",
                   }}
                 >

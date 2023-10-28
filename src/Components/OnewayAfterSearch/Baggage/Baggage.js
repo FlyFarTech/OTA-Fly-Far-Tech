@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const Baggage = () => {
+const Baggage = ({ flight }) => {
   return (
     <>
       <Box sx={{ marginTop: "34px" }}>
@@ -35,24 +35,15 @@ const Baggage = () => {
                 >
                   Passenger Type
                 </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "var( --white-color)", fontSize: "11px" }}
-                >
-                  Adult
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "var( --white-color)", fontSize: "11px" }}
-                >
-                  Child
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ color: "var( --white-color)", fontSize: "11px" }}
-                >
-                  Infant
-                </TableCell>
+                {flight?.priceBreakdown?.map((data, index) => (
+                  <TableCell
+                    index={index}
+                    align="center"
+                    sx={{ color: "var( --white-color)", fontSize: "11px" }}
+                  >
+                    {data?.paxType}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -68,9 +59,15 @@ const Baggage = () => {
                 >
                   Baggage
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.priceBreakdown.map((price, index) => (
+                  <TableCell
+                    key={index}
+                    align="center"
+                    sx={{ color: "var(--grey-color)", fontSize: "11px" }}
+                  >
+                    {flight.segments.slice(0, 1)[0].bags}
+                  </TableCell>
+                ))}
               </TableRow>
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -84,9 +81,15 @@ const Baggage = () => {
                 >
                   Check In
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.priceBreakdown?.map((data, index) => (
+                  <TableCell
+                    index={index}
+                    align="center"
+                    sx={{ color: "var( --grey-color)", fontSize: "11px" }}
+                  >
+                    7 KG
+                  </TableCell>
+                ))}
               </TableRow>
 
               <TableRow
@@ -101,9 +104,15 @@ const Baggage = () => {
                 >
                   Cabin
                 </TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">02</TableCell>
-                <TableCell align="center">01</TableCell>
+                {flight?.priceBreakdown.map((price, index) => (
+                  <TableCell
+                    key={index}
+                    align="center"
+                    sx={{ color: "var(--grey-color)", fontSize: "11px" }}
+                  >
+                    {flight.segments.slice(0, 1)[0].cabinCode}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableBody>
           </Table>

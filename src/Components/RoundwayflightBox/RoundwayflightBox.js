@@ -18,17 +18,13 @@ import { ReactComponent as OnStop } from "./onstop.svg";
 import { ReactComponent as TwoStop } from "./twostop.svg";
 import EastIcon from "@mui/icons-material/East";
 import ErrorIcon from "@mui/icons-material/Error";
+import dayjs from "dayjs";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import LuggageIcon from "@mui/icons-material/Luggage";
-import FareDetails from "../FareDetails/FareDetails";
-import FareComission from "../FareComission/FareComission";
-import FarePolicy from "../FarePolicy/FarePolicy";
-import Baggage from "../Baggage/Baggage";
-import dayjs from "dayjs";
-const OnewayflightBox = ({ flight }) => {
+const RoundwayflightBox = ({ flight }) => {
   console.log(flight);
   const [expand, setExpand] = useState(false);
-  let OnewayflightBox = styled(Box)({
+  let RoundwayflightBox = styled(Box)({
     backgroundColor: "var(--white-color)",
     borderRadius: "5px",
   });
@@ -59,14 +55,24 @@ const OnewayflightBox = ({ flight }) => {
         sx={{
           bgcolor: "var(--white-color)",
           borderRadius: "5px",
-          marginTop: "25px",
+          marginTop: "27px",
         }}
       >
-        <OnewayflightBox>
+        <RoundwayflightBox>
           <Box sx={{ paddingBottom: "15px", borderRadius: "5px" }}>
             <Container>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={12} md={3} lg={2.3}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={2}
+                  lg={2}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Box>
                     <Box sx={{ width: "50px", height: "50px" }}>
                       <img
@@ -83,7 +89,7 @@ const OnewayflightBox = ({ flight }) => {
                     <Typography
                       sx={{ fontSize: "11px", color: "var(--grey-color)" }}
                     >
-                      {flight?.segments?.map((segment, index) => (
+                      {flight?.segments.go?.map((segment, index) => (
                         <span key={index}>
                           {`${segment?.marketingCareer}-${segment?.marketingFlight}`}{" "}
                         </span>
@@ -95,12 +101,12 @@ const OnewayflightBox = ({ flight }) => {
                   item
                   xs={12}
                   sm={1.5}
-                  md={1.2}
-                  lg={1.2}
+                  lg={1.5}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    flexDirection: "column",
                   }}
                 >
                   <Box>
@@ -112,9 +118,19 @@ const OnewayflightBox = ({ flight }) => {
                       }}
                     />
                   </Box>
+                  <Box sx={{ marginTop: { xs: "20px", sm: "95px" } }}>
+                    <AirplanemodeActiveIcon
+                      sx={{
+                        transform: "rotate(-90deg)",
+                        fontSize: "34px",
+                        color: "var(--purple-color)",
+                      }}
+                    />
+                  </Box>
                 </Grid>
-                <Grid item md={5.9} xs={12} sm={12} lg={4.6}>
-                  <Box sx={{ textAlign: "center" }}>
+                <Grid item xs={12} sm={4.6} lg={4.6}>
+                  {/* go */}
+                  <Box sx={{ textAlign: "center", marginTop: "34px" }}>
                     <Box
                       sx={{
                         display: "flex",
@@ -123,13 +139,14 @@ const OnewayflightBox = ({ flight }) => {
                       }}
                     >
                       <Typography sx={{ fontSize: "25px" }}>
-                        {flight?.departure}
+                        {flight?.godeparture}
                       </Typography>
                       <Typography sx={{ fontSize: "25px" }}>
                         {" "}
-                        {flight?.arrival}
+                        {flight?.goarrival}
                       </Typography>
                     </Box>
+
                     <Box>
                       <Container>
                         <Box
@@ -140,7 +157,7 @@ const OnewayflightBox = ({ flight }) => {
                             gap: "96px",
                           }}
                         >
-                          {flight?.segments.length === 3 && (
+                          {flight?.segments.go.length === 3 && (
                             <React.Fragment>
                               <Typography
                                 sx={{
@@ -148,7 +165,7 @@ const OnewayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {flight?.segments.slice(0, -1)[0].arrival}
+                                {flight?.segments.go.slice(0, -1)[0].arrival}
                               </Typography>
                               <Typography
                                 sx={{
@@ -156,11 +173,11 @@ const OnewayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {flight?.segments.slice(0, -1)[1].arrival}
+                                {flight?.segments.go.slice(0, -1)[1].arrival}
                               </Typography>
                             </React.Fragment>
                           )}
-                          {flight?.segments.length === 2 && (
+                          {flight?.segments.go.length === 2 && (
                             <React.Fragment>
                               <Typography
                                 sx={{
@@ -168,19 +185,19 @@ const OnewayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {flight?.segments.slice(0, -1)[0].arrival}
+                                {flight?.segments.go.slice(0, -1)[0].arrival}
                               </Typography>
                             </React.Fragment>
                           )}
                         </Box>
                       </Container>
-                      {(flight?.segments.length === 1 && (
+                      {(flight?.segments.go.length === 1 && (
                         <Lines style={{ width: "100%" }} />
                       )) ||
-                        (flight?.segments.length === 2 && (
+                        (flight?.segments.go.length === 2 && (
                           <OnStop style={{ width: "100%" }} />
                         )) ||
-                        (flight?.segments.length === 3 && (
+                        (flight?.segments.go.length === 3 && (
                           <TwoStop style={{ width: "100%" }} />
                         ))}
                       <Container>
@@ -192,7 +209,7 @@ const OnewayflightBox = ({ flight }) => {
                             gap: "60px",
                           }}
                         >
-                          {flight?.segments.length === 2 && (
+                          {flight?.segments.go.length === 2 && (
                             <React.Fragment>
                               <Typography
                                 sx={{
@@ -200,13 +217,14 @@ const OnewayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {formatTimeWithAMPM(
-                                  flight?.segments.slice(0, -1)[0].arrivalTime
-                                )}
+                                {dayjs(
+                                  flight?.segments.go.slice(0, -1)[0]
+                                    .arrivalTime
+                                ).format("hh:mm A")}
                               </Typography>
                             </React.Fragment>
                           )}
-                          {flight?.segments.length === 3 && (
+                          {flight?.segments.go.length === 3 && (
                             <React.Fragment>
                               <Typography
                                 sx={{
@@ -214,9 +232,10 @@ const OnewayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {formatTimeWithAMPM(
-                                  flight?.segments.slice(0, -1)[0].arrivalTime
-                                )}
+                                {dayjs(
+                                  flight?.segments.go.slice(0, -1)[0]
+                                    .arrivalTime
+                                ).format("hh:mm A")}
                               </Typography>
                               <Typography
                                 sx={{
@@ -224,9 +243,10 @@ const OnewayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {formatTimeWithAMPM(
-                                  flight?.segments.slice(0, -1)[1].arrivalTime
-                                )}
+                                {dayjs(
+                                  flight?.segments.go.slice(0, -1)[1]
+                                    .arrivalTime
+                                ).format("hh:mm A")}
                               </Typography>
                             </React.Fragment>
                           )}
@@ -245,15 +265,162 @@ const OnewayflightBox = ({ flight }) => {
                       <Typography
                         sx={{ fontSize: "11px", color: "var(--grey-color)" }}
                       >
-                        {formatTimeWithAMPM(
-                          flight.segments.slice(0, 1)[0].departureTime
+                        {dayjs(flight.godepartureTime, "HH:mm").format(
+                          "hh:mm A"
                         )}{" "}
                       </Typography>
                       <Typography
                         sx={{ fontSize: "11px", color: "var(--grey-color)" }}
                       >
-                        {formatTimeWithAMPM(
-                          flight.segments.slice(-1)[0].arrivalTime
+                        {dayjs(flight.goarrivalTime, "HH:mm").format("hh:mm A")}{" "}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  {/* back */}
+                  <Box sx={{ textAlign: "center", marginTop: "34px" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography sx={{ fontSize: "25px" }}>
+                        {flight?.backdeparture}
+                      </Typography>
+                      <Typography sx={{ fontSize: "25px" }}>
+                        {" "}
+                        {flight?.backarrival}
+                      </Typography>
+                    </Box>
+
+                    <Box>
+                      <Container>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "96px",
+                          }}
+                        >
+                          {flight?.segments.back.length === 3 && (
+                            <React.Fragment>
+                              <Typography
+                                sx={{
+                                  fontSize: "10px",
+                                  color: "var(--grey-color)",
+                                }}
+                              >
+                                {flight?.segments.back.slice(0, -1)[0].arrival}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontSize: "10px",
+                                  color: "var(--grey-color)",
+                                }}
+                              >
+                                {flight?.segments.back.slice(0, -1)[1].arrival}
+                              </Typography>
+                            </React.Fragment>
+                          )}
+                          {flight?.segments.back.length === 2 && (
+                            <React.Fragment>
+                              <Typography
+                                sx={{
+                                  fontSize: "10px",
+                                  color: "var(--grey-color)",
+                                }}
+                              >
+                                {flight?.segments.back.slice(0, -1)[0].arrival}
+                              </Typography>
+                            </React.Fragment>
+                          )}
+                        </Box>
+                      </Container>
+                      {(flight?.segments.back.length === 1 && (
+                        <Lines style={{ width: "100%" }} />
+                      )) ||
+                        (flight?.segments.back.length === 2 && (
+                          <OnStop style={{ width: "100%" }} />
+                        )) ||
+                        (flight?.segments.back.length === 3 && (
+                          <TwoStop style={{ width: "100%" }} />
+                        ))}
+                      <Container>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "60px",
+                          }}
+                        >
+                          {flight?.segments.back.length === 2 && (
+                            <React.Fragment>
+                              <Typography
+                                sx={{
+                                  fontSize: "10px",
+                                  color: "var(--grey-color)",
+                                }}
+                              >
+                                {dayjs(
+                                  flight?.segments.back.slice(0, -1)[0]
+                                    .backarrivalTime
+                                ).format("hh:mm A")}
+                              </Typography>
+                            </React.Fragment>
+                          )}
+                          {flight?.segments.back.length === 3 && (
+                            <React.Fragment>
+                              <Typography
+                                sx={{
+                                  fontSize: "11px",
+                                  color: "var(--grey-color)",
+                                }}
+                              >
+                                {dayjs(
+                                  flight?.segments.back.slice(0, -1)[0]
+                                    .backarrivalTime
+                                ).format("hh:mm A")}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontSize: "11px",
+                                  color: "var(--grey-color)",
+                                }}
+                              >
+                                {dayjs(
+                                  flight?.segments.back.slice(0, -1)[1]
+                                    .backarrivalTime
+                                ).format("hh:mm A")}
+                              </Typography>
+                            </React.Fragment>
+                          )}
+                        </Box>
+                      </Container>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "18px",
+                      }}
+                    >
+                      <Typography
+                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                      >
+                        {dayjs(flight.backdepartureTime, "HH:mm").format(
+                          "hh:mm A"
+                        )}{" "}
+                      </Typography>
+                      <Typography
+                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                      >
+                        {dayjs(flight.backarrivalTime, "HH:mm").format(
+                          "hh:mm A"
                         )}{" "}
                       </Typography>
                     </Box>
@@ -262,13 +429,13 @@ const OnewayflightBox = ({ flight }) => {
                 <Grid
                   item
                   xs={12}
-                  sm={12}
-                  md={1.9}
+                  sm={1.9}
                   lg={1.9}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    flexDirection: "column",
                   }}
                 >
                   <Box
@@ -296,24 +463,61 @@ const OnewayflightBox = ({ flight }) => {
                         sx={{ fontSize: "10px", color: "var(--grey-color)" }}
                       >
                         {" "}
-                        {flight?.totalFlightDuration}
+                        {flight?.totalGoFlightDuration}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      marginTop: { xs: "20px", sm: "95px" },
+                      display: "flex",
+                      border: "1px solid var(--grey-color)",
+                      justifyContent: "start",
+                      alignItems: "center",
+                      gap: "5px",
+                      borderRadius: "10px",
+                      padding: "2px 3px",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <AccessTimeFilledIcon
+                        sx={{ fontSize: "17px", color: "var(--grey-color)" }}
+                      ></AccessTimeFilledIcon>
+                      <Typography
+                        sx={{ fontSize: "10px", color: "var(--grey-color)" }}
+                      >
+                        {" "}
+                        {flight?.totalBackFlightDuration}
                       </Typography>
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item sm={12} xs={12} lg={2}>
-                  <Box sx={{ textAlign: "right" }}>
-                    <Typography
-                      sx={{
-                        fontSize: "28px",
-                        textAlign: {
-                          xs: "",
-                          sm: "center",
-                          md: "center",
-                          lg: "right",
-                        },
-                      }}
-                    >
+                <Grid
+                  item
+                  sm={2}
+                  xs={12}
+                  lg={2}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      textAlign: "right",
+                      width: "100%",
+                      marginTop: { xs: "10px", sm: "0" },
+                    }}
+                  >
+                    <Typography sx={{ fontSize: "28px" }}>
                       ৳
                       {(flight?.clientPrice)
                         .toString()
@@ -324,7 +528,7 @@ const OnewayflightBox = ({ flight }) => {
                         endIcon={<EastIcon />}
                         variant="contained"
                         sx={{
-                          marginTop: "17px",
+                          marginTop: { xs: "8px", sm: "17px" },
                           bgcolor: "var(--purple-color)",
                           width: "100%",
                           fontSize: "15px",
@@ -341,13 +545,15 @@ const OnewayflightBox = ({ flight }) => {
               </Grid>
 
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={12} lg={4}>
+                <Grid item xs={12} sm={4} lg={4}>
                   <Typography
                     sx={{
                       fontSize: "12px",
                       color: "var(--grey-color)",
                       display: "flex",
-                      justifyContent: "start",
+
+                      marginTop: { xs: "10px", sm: "0px" },
+                      justifyContent: { xs: "center", sm: "start" },
                       alignItems: "center",
                       gap: "8px",
                     }}
@@ -356,7 +562,7 @@ const OnewayflightBox = ({ flight }) => {
                     <span>{flight?.refundable}</span>
                   </Typography>
                 </Grid>
-                <Grid item sm={12} xs={12} lg={4}>
+                <Grid item sm={4} xs={12} lg={4}>
                   <Typography
                     onClick={() => setExpand(!expand)}
                     sx={{
@@ -370,11 +576,11 @@ const OnewayflightBox = ({ flight }) => {
                     {expand ? "Hide Details" : "More Details"}
                   </Typography>
                 </Grid>
-                <Grid item sm={12} xs={12} lg={4}></Grid>
+                <Grid item sm={4} xs={12} lg={4}></Grid>
               </Grid>
             </Container>
           </Box>
-        </OnewayflightBox>
+        </RoundwayflightBox>
         <Accordion
           expanded={expand}
           sx={{ boxShadow: "none", borderRadius: "5px" }}
@@ -387,11 +593,7 @@ const OnewayflightBox = ({ flight }) => {
 
           <AccordionDetails>
             <Container maxWidth="md">
-              <TabBoxes
-                sx={{
-                  flexDirection: { xs: "column", sm: "row" },
-                }}
-              >
+              <TabBoxes sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 <Button
                   variant="contained"
                   sx={{
@@ -511,7 +713,298 @@ const OnewayflightBox = ({ flight }) => {
             {/* flight details */}
             {activeTab === "flightDetails" && (
               <FlightDetails sx={{ marginTop: "55px" }}>
-                {flight?.segments.map((segment, index) => (
+                {/* go area */}
+                {flight?.segments.go.map((segment, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      width: "99%",
+                      margin: "0 auto",
+                      marginTop: "10px !important",
+                    }}
+                  >
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={2} lg={2.3}>
+                        <Box>
+                          <Box sx={{ width: "50px", height: "50px" }}>
+                            <img
+                              src={`https://tbbd-flight.s3.ap-southeast-1.amazonaws.com/airlines-logo/${segment?.marketingCareer}.png`}
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                              }}
+                            />
+                          </Box>
+                          <Typography
+                            sx={{ fontSize: "15px", fontWeight: "500" }}
+                          >
+                            {segment?.marketingCareerName}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: "11px",
+                              color: "var(--grey-color)",
+                            }}
+                          >
+                            <span key={index}>
+                              {`${segment?.marketingCareer}-${segment?.marketingFlight}`}{" "}
+                            </span>
+                          </Typography>
+                        </Box>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={1.5}
+                        md={1.2}
+                        lg={1.2}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Box>
+                          <AirplanemodeActiveIcon
+                            sx={{
+                              transform: "rotate(90deg)",
+                              fontSize: "34px",
+                              color: "var(--purple-color)",
+                            }}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item md={5.9} xs={12} sm={12} lg={4.6}>
+                        <Box sx={{ textAlign: "center" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Typography sx={{ fontSize: "25px" }}>
+                              {segment?.departure}
+                            </Typography>
+                            <Typography sx={{ fontSize: "25px" }}>
+                              {" "}
+                              {segment?.arrival}
+                            </Typography>
+                          </Box>
+                          <Box>
+                            <Container>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  gap: "96px",
+                                }}
+                              ></Box>
+                            </Container>
+
+                            <Lines style={{ width: "100%" }} />
+
+                            <Container>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  gap: "60px",
+                                }}
+                              ></Box>
+                            </Container>
+                          </Box>
+
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              marginTop: "18px",
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontSize: "11px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(segment?.departureTime)}{" "}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "11px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(segment?.arrivalTime)}{" "}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        md={1.9}
+                        lg={1.9}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            border: "1px solid var(--grey-color)",
+                            justifyContent: "start",
+                            alignItems: "center",
+                            gap: "5px",
+                            borderRadius: "10px",
+                            padding: "2px 3px",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <AccessTimeFilledIcon
+                              sx={{
+                                fontSize: "17px",
+                                color: "var(--grey-color)",
+                              }}
+                            ></AccessTimeFilledIcon>
+                            <Typography
+                              sx={{
+                                fontSize: "10px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {" "}
+                              {segment?.flightDuration}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Grid>
+                      <Grid item sm={12} xs={12} lg={2}>
+                        <Box
+                          sx={{
+                            textAlign: "left",
+                            color: "var(--grey-color)",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "12px",
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                              gap: "9px",
+                            }}
+                          >
+                            <AccessTimeFilledIcon sx={{ fontSize: "15px" }} />
+                            <span>{flight?.refundable}</span>
+                          </Typography>
+                          <Typography
+                            sx={{
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                              gap: "9px",
+                              fontSize: "12.64px",
+                              marginTop: "11px",
+                            }}
+                          >
+                            <EventSeatIcon sx={{ fontSize: "15px" }} />
+                            <span>
+                              {flight?.class || "Economy"} |{" "}
+                              {segment?.cabinCode}
+                            </span>
+                          </Typography>
+                          <Typography
+                            sx={{
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                              gap: "9px",
+                              fontSize: "12.64px",
+                              marginTop: "11px",
+                            }}
+                          >
+                            <LuggageIcon sx={{ fontSize: "15px" }} />
+                            <span>Baggage {segment?.bags} </span>
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                    {index < flight.segments?.length - 1 && (
+                      <Container maxWidth="sm">
+                        <Box
+                          sx={{
+                            bgcolor: "var(--light-purple)",
+                            margin: "19px auto",
+                            borderRadius: "29px",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "12px",
+                              color: "var(--purple-color)",
+                              textAlign: "center",
+                              padding: "7px",
+                              borderRadius: "29px",
+                              fontWeight: "600",
+                              bgcolor: "var(--deep-purple-color)",
+                            }}
+                          >
+                            Change Plane{" "}
+                            {flight.segments[index + 1]?.departureAirport}|{" "}
+                            {index === 1 &&
+                              flight.segments[index + 1]?.arrivalAirport}
+                            | Connecting time at{" "}
+                            {index < flight.transit.length
+                              ? flight.transit[index].split(":")[1]
+                              : ""}
+                          </Typography>
+                        </Box>
+                      </Container>
+                    )}
+                  </Box>
+                ))}
+
+                <Container maxWidth="sm">
+                  <Box
+                    sx={{
+                      bgcolor: "var(--light-purple)",
+                      margin: "19px auto",
+                      borderRadius: "29px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "12px",
+                        color: "var(--purple-color)",
+                        textAlign: "center",
+                        padding: "7px",
+                        borderRadius: "29px",
+                        fontWeight: "600",
+                        bgcolor: "var(--deep-purple-color)",
+                      }}
+                    >
+                      Return
+                    </Typography>
+                  </Box>
+                </Container>
+
+                {/* return area */}
+
+                {flight?.segments.back.map((segment, index) => (
                   <Box
                     key={index}
                     sx={{
@@ -777,17 +1270,15 @@ const OnewayflightBox = ({ flight }) => {
               </FlightDetails>
             )}
             {/* fare details */}
-            {activeTab === "fareDetails" && <FareDetails flight={flight} />}
+            {activeTab === "fareDetails" && "fareDetails"}
 
             {/* fare Commission*/}
-            {activeTab === "fareCommission" && (
-              <FareComission flight={flight} />
-            )}
+            {activeTab === "fareCommission" && "fareCommission"}
             {/* fare Policiy*/}
-            {activeTab === "farePolicy" && <FarePolicy />}
+            {activeTab === "farePolicy" && "farePolicy"}
 
             {/*Baggage*/}
-            {activeTab === "baggage" && <Baggage flight={flight} />}
+            {activeTab === "baggage" && "baggage"}
           </AccordionDetails>
         </Accordion>
       </Box>
@@ -795,4 +1286,4 @@ const OnewayflightBox = ({ flight }) => {
   );
 };
 
-export default OnewayflightBox;
+export default RoundwayflightBox;
