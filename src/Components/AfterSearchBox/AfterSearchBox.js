@@ -14,7 +14,23 @@ import SearchIcon from "@mui/icons-material/Search";
 import flightData from "./flightData.js";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-const AfterSearchBox = () => {
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import dayjs from "dayjs";
+const AfterSearchBox = ({
+  departureCode,
+  arrivalCode,
+  departureDate,
+  adultCount,
+  childCount,
+  infantCount,
+
+  arrivalAddress,
+  departureAddress,
+}) => {
   const [selectedRadioValue, setSelectedRadioValue] = useState("One Way");
   const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
 
@@ -31,6 +47,12 @@ const AfterSearchBox = () => {
     flight.code.toLowerCase().includes(searchQuery.toLowerCase())
   );
   const [isToggle, setIsToggle] = useState(false);
+  const [isDeparture, setIsDeparture] = useState(false);
+  const [isArrival, setIsArrival] = useState(false);
+  const [isTravelDate, setIsTravelDate] = useState(false);
+  const [isReturnDate, setIsReturnDate] = useState(false);
+  const [isPassenger, setIsPassenger] = useState(false);
+
   return (
     <Box
       sx={{
@@ -40,7 +62,7 @@ const AfterSearchBox = () => {
         paddingBottom: "21px",
       }}
     >
-      <Box sx={{ width: "70%", margin: "0 auto" }}>
+      <Container>
         <FormControl>
           <RadioGroup
             row
@@ -107,14 +129,16 @@ const AfterSearchBox = () => {
         </FormControl>
         <Box sx={{ marginTop: "17px", position: "relative" }}>
           <Grid container spacing={1}>
-            <Grid item xs={12} md={6} lg={2.4} sx={{ position: "relative" }}>
+            <Grid item xs={12} md={6} lg={2.5} sx={{ position: "relative" }}>
               <Box
+                onClick={() => setIsDeparture(!isDeparture)}
                 sx={{
                   border: "1px solid var(--grey-color)",
                   paddingLeft: "10px",
                   paddingTop: "8px",
                   paddingBottom: "15px",
                   borderRadius: "5px",
+                  cursor: "pointer",
                 }}
               >
                 <Typography
@@ -133,16 +157,19 @@ const AfterSearchBox = () => {
                     color: "var(--purple-color)",
                   }}
                 >
-                  Dhaka, Hazrat Shajalal Intl Airport
+                  {isToggle ? `${arrivalAddress}` : `${departureAddress}`}
                 </Typography>
               </Box>
-
-              {/* <Box
+              {/* DEPARTURE ITEMS */}
+              <Box
                 sx={{
                   bgcolor: "var(--white-color)",
                   position: "absolute",
                   width: "100%",
                   paddingBottom: "5px",
+                  boxShadow: 2,
+                  zIndex: 1300,
+                  display: isDeparture ? "block" : "none",
                 }}
               >
                 <input
@@ -171,12 +198,17 @@ const AfterSearchBox = () => {
                       borderBottom: "1px solid var(--grey-color)",
                       padding: "0 10px",
                       marginTop: "5px",
+                      cursor: "pointer",
+
+                      transition: "all 0.3s", // Add a smooth transition effect
+                      "&:hover": {
+                        color: "var(--white-color) !important",
+                        bgcolor: "var(--purple-color)",
+                      },
                     }}
                   >
                     <Box>
-                      <Typography
-                        sx={{ fontSize: "13px", color: "var(--purple-color)" }}
-                      >
+                      <Typography sx={{ fontSize: "13px", fontWeight: "600" }}>
                         {result.Address}
                       </Typography>
                       <Typography sx={{ fontSize: "12px" }}>
@@ -188,29 +220,34 @@ const AfterSearchBox = () => {
                     </Typography>
                   </Box>
                 ))}
-              </Box> */}
+              </Box>
             </Grid>
             <Box
               onClick={() => setIsToggle(!isToggle)}
               sx={{
-                height: "30.8px",
-                width: "30.8px",
+                height: "25px",
+                width: "25px",
+                zIndex: 20,
                 borderRadius: "50%",
                 bgcolor: "var(--purple-color)",
                 position: "absolute",
-                left: "18.5%",
-                top: "30%",
+                left: "19.5%",
+                top: "35%",
                 cursor: "pointer",
               }}
-            ></Box>
-            <Grid item xs={12} md={6} lg={2.4}>
+            >
+              <CompareArrowsIcon sx={{ color: "var(--white-color)" }} />
+            </Box>
+            <Grid item xs={12} md={6} lg={2.5} sx={{ position: "relative" }}>
               <Box
+                onClick={() => setIsArrival(!isArrival)}
                 sx={{
                   border: "1px solid var(--grey-color)",
                   paddingLeft: "10px",
                   paddingTop: "8px",
                   paddingBottom: "15px",
                   borderRadius: "5px",
+                  cursor: "pointer",
                 }}
               >
                 <Typography
@@ -229,13 +266,75 @@ const AfterSearchBox = () => {
                     color: "var(--purple-color)",
                   }}
                 >
-                  Dhaka, Hazrat Shajalal Intl Airport
+                  {isToggle ? `${departureAddress}` : `${arrivalAddress}`}
                 </Typography>
               </Box>
-            </Grid>
-            <Grid item xs={12} md={6} lg={2.1}>
+
               <Box
                 sx={{
+                  bgcolor: "var(--white-color)",
+                  position: "absolute",
+                  width: "100%",
+                  paddingBottom: "5px",
+                  boxShadow: 2,
+                  zIndex: 1300,
+                  display: isArrival ? "block" : "none",
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Search airport"
+                  value={searchQuery}
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    paddingLeft: "10px",
+                    background: "transparent",
+                    borderBottom: "1px solid var(--grey-color)",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                    outline: "none",
+                  }}
+                  onChange={handleInputChange}
+                />
+                {searchResults.slice(0, 5).map((result) => (
+                  <Box
+                    key={result.id}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      borderBottom: "1px solid var(--grey-color)",
+                      padding: "0 10px",
+                      marginTop: "5px",
+                      cursor: "pointer",
+
+                      transition: "all 0.3s", // Add a smooth transition effect
+                      "&:hover": {
+                        color: "var(--white-color) !important",
+                        bgcolor: "var(--purple-color)",
+                      },
+                    }}
+                  >
+                    <Box>
+                      <Typography sx={{ fontSize: "13px", fontWeight: "600" }}>
+                        {result.Address}
+                      </Typography>
+                      <Typography sx={{ fontSize: "12px" }}>
+                        {result.name}
+                      </Typography>
+                    </Box>
+                    <Typography sx={{ fontSize: "11.5px" }}>
+                      {result?.code}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} lg={2} sx={{ position: "relaitve" }}>
+              <Box
+                sx={{
+                  cursor: "pointer",
                   border: "1px solid var(--grey-color)",
                   paddingLeft: "10px",
                   paddingRight: "10px",
@@ -282,58 +381,135 @@ const AfterSearchBox = () => {
                   />
                 </Box>
               </Box>
-            </Grid>
-            <Grid item xs={12} md={6} lg={2.1}>
+
+              {/* data journey */}
+
               <Box
                 sx={{
-                  border: "1px solid var(--grey-color)",
-                  paddingLeft: "10px",
-                  paddingRight: "10px",
-                  paddingTop: "8px",
-                  paddingBottom: "15px",
-                  borderRadius: "5px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  position: "absolute",
+                  bgcolor: "var(--white-color)",
+                  boxShadow: 2,
+                  zIndex: "50",
                 }}
               >
-                <Box>
-                  <Typography
-                    sx={{
-                      fontSize: "11px",
-                      color: "var(--grey-color)",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Arrival Date
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "12.5px",
-                      fontWeight: "700",
-                      color: "var(--purple-color)",
-                    }}
-                  >
-                    Wed, 16 Aug 2022
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ArrowBackIosNewIcon
-                    sx={{ fontSize: "17.36px", color: "var(--purple-color)" }}
-                  />
-                  <ArrowForwardIosIcon
-                    sx={{ fontSize: "17.36px", color: "var(--purple-color)" }}
-                  />
-                </Box>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateCalendar />
+                </LocalizationProvider>
               </Box>
             </Grid>
-            <Grid item xs={12} md={6} lg={2.2}>
+            <Grid item xs={12} md={6} lg={2} sx={{ position: "relative" }}>
+              {selectedRadioValue === "One Way" ? (
+                <Box
+                  onClick={() => setSelectedRadioValue("Round Way")}
+                  sx={{
+                    border: "1px solid var(--grey-color)",
+                    paddingLeft: "10px",
+                    paddingRight: "10px",
+                    paddingTop: "8px",
+                    paddingBottom: "15px",
+                    borderRadius: "5px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontSize: "11px",
+                        color: "var(--grey-color)",
+                        fontWeight: "500",
+                      }}
+                    >
+                      Add
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "12.5px",
+                        fontWeight: "700",
+                        color: "var(--purple-color)",
+                      }}
+                    >
+                      Return
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    [+]
+                  </Box>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    border: "1px solid var(--grey-color)",
+                    paddingLeft: "10px",
+                    paddingRight: "10px",
+                    paddingTop: "8px",
+                    paddingBottom: "15px",
+                    borderRadius: "5px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontSize: "11px",
+                        color: "var(--grey-color)",
+                        fontWeight: "500",
+                      }}
+                    >
+                      Arrival Date
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "12.5px",
+                        fontWeight: "700",
+                        color: "var(--purple-color)",
+                      }}
+                    >
+                      Wed, 16 Aug 2022
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ArrowBackIosNewIcon
+                      sx={{ fontSize: "17.36px", color: "var(--purple-color)" }}
+                    />
+                    <ArrowForwardIosIcon
+                      sx={{ fontSize: "17.36px", color: "var(--purple-color)" }}
+                    />
+                  </Box>
+                </Box>
+              )}
+
+              <Box
+                sx={{
+                  position: "absolute",
+                  bgcolor: "var(--white-color)",
+                  boxShadow: 2,
+                  zIndex: 1300,
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateCalendar />
+                </LocalizationProvider>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6} lg={2.2} sx={{ position: "relative" }}>
               <Box
                 sx={{
                   border: "1px solid var(--grey-color)",
@@ -341,6 +517,7 @@ const AfterSearchBox = () => {
                   paddingTop: "8px",
                   paddingBottom: "15px",
                   borderRadius: "5px",
+                  cursor: "pointer",
                 }}
               >
                 <Typography
@@ -362,6 +539,281 @@ const AfterSearchBox = () => {
                   1 Traveler & Economy
                 </Typography>
               </Box>
+
+              <Box
+                sx={{
+                  boxShadow: 2,
+                  bgcolor: "var(--white-color)",
+                  padding: "10px",
+                  position: "absolute",
+                  zIndex: "50",
+                  marginTop: "5px",
+                  display: "block",
+                }}
+              >
+                <Box>
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      color: "var(--passenger-color)",
+                    }}
+                  >
+                    Passenger
+                  </Typography>
+                </Box>
+                <Box>
+                  <Box
+                    sx={{
+                      marginTop: "9px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexDirection: { md: "row", xs: "column" },
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box>
+                      <Typography sx={{ fontSize: "14px" }}>
+                        <span style={{ fontWeight: "bold" }}>0 Adult </span>
+                        <br></br>
+                        <span
+                          style={{
+                            color: "var( --passenger-color)",
+                            fontSize: "13px",
+                            fontWeight: "500",
+                          }}
+                        >
+                          12+ yrs
+                        </span>
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          minWidth: "20px",
+                          minHeight: "20px",
+                          bgcolor: "var( --purple-color)",
+                        }}
+                      >
+                        +
+                      </Button>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          minWidth: "20px",
+                          minHeight: "20px",
+                          marginLeft: "2px",
+                          bgcolor: "var( --purple-color)",
+                        }}
+                      >
+                        -
+                      </Button>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      marginTop: "10px",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      flexDirection: { md: "row", xs: "column" },
+                    }}
+                  >
+                    <Box>
+                      <Typography sx={{ fontSize: "14px" }}>
+                        <span style={{ fontWeight: "bold" }}>0 Children</span>{" "}
+                        <br></br>
+                        <span
+                          style={{
+                            color: "var( --passenger-color)",
+                            fontSize: "13px",
+                            fontWeight: "500",
+                          }}
+                        >
+                          2- less than 12 yrs
+                        </span>
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          minWidth: "20px",
+                          minHeight: "20px",
+                          bgcolor: "var( --purple-color)",
+                        }}
+                      >
+                        +
+                      </Button>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          minWidth: "20px",
+                          minHeight: "20px",
+                          marginLeft: "2px",
+                          bgcolor: "var( --purple-color)",
+                        }}
+                      >
+                        -
+                      </Button>
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      marginTop: "10px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      flexDirection: { md: "row", xs: "column" },
+                    }}
+                  >
+                    <Box>
+                      <Typography sx={{ fontSize: "14px" }}>
+                        <span style={{ fontWeight: "bold" }}>0 Infant</span>{" "}
+                        <br></br>
+                        <span
+                          style={{
+                            color: "var( --passenger-color)",
+                            fontSize: "13px",
+                            fontWeight: "500",
+                          }}
+                        >
+                          0 - 23 month
+                        </span>
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: "2px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          minWidth: "20px",
+                          minHeight: "20px",
+                          bgcolor: "var( --purple-color)",
+                        }}
+                      >
+                        +
+                      </Button>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          minWidth: "20px",
+                          minHeight: "20px",
+
+                          bgcolor: "var( --purple-color)",
+                        }}
+                      >
+                        -
+                      </Button>
+                    </Box>
+                  </Box>
+                </Box>
+                <hr style={{ marginTop: "20px" }}></hr>
+                <Box sx={{ marginTop: "6px" }}>
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        value="Economy"
+                        control={
+                          <Radio
+                            sx={{
+                              "& .MuiSvgIcon-root": {
+                                fontSize: "18px",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Economy
+                          </Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value="Business"
+                        control={
+                          <Radio
+                            sx={{
+                              "& .MuiSvgIcon-root": {
+                                fontSize: "18px",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Business
+                          </Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value="First Class"
+                        control={
+                          <Radio
+                            sx={{
+                              "& .MuiSvgIcon-root": {
+                                fontSize: "18px",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: "12px" }}>
+                            First Class
+                          </Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value="Premium Economy"
+                        control={
+                          <Radio
+                            sx={{
+                              "& .MuiSvgIcon-root": {
+                                fontSize: "18px",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Premium Economy
+                          </Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Box>
+                <Box sx={{ textAlign: "right" }}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      background: "var(--purple-color)",
+                      color: "var(--white-color)",
+                      textTransform: "capitalize",
+                      padding: "5px 30px",
+                    }}
+                  >
+                    Done
+                  </Button>
+                </Box>
+              </Box>
             </Grid>
             <Grid item xs={12} md={6} lg={0.8}>
               <Box sx={{ height: "100%", width: "100%" }}>
@@ -380,7 +832,7 @@ const AfterSearchBox = () => {
             </Grid>
           </Grid>
         </Box>
-      </Box>
+      </Container>
     </Box>
   );
 };

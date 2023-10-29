@@ -38,6 +38,8 @@ const Oneway = ({ setSelectedRadioValue }) => {
 
   const [departureCode, setDepartureCode] = useState("DAC");
   const [arrivalCode, setArrivalCode] = useState("CXB");
+  const [departureAddress, setDepartureAddress] = useState("Dhaka,BANGLADESH");
+
   const [depCode, setDepCode] = useState("");
   const [arrCode, setArrCode] = useState("");
   const [checkInDate, setCheckInDate] = useState(dayjs(new Date()));
@@ -68,6 +70,8 @@ const Oneway = ({ setSelectedRadioValue }) => {
     navigate("/onewayaftersearch", {
       state: {
         departureCode,
+        departureAddress,
+
         arrivalCode,
         checkInDate: checkInDate.format("YYYY-MM-DD"),
         adultCount,
@@ -241,6 +245,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
                       setDepCode(result?.code);
                       setIsDeparture(false);
                       setIsArrival(true);
+                      setDepartureAddress(result?.Address);
                     }}
                     key={index}
                     sx={{
@@ -250,7 +255,12 @@ const Oneway = ({ setSelectedRadioValue }) => {
                       alignItems: "center",
                       borderBottom: "1px solid var(--grey-color)",
                       padding: "0 10px",
-                      marginTop: "5px",
+
+                      transition: "all 0.3s", // Add a smooth transition effect
+                      "&:hover": {
+                        color: "white",
+                        bgcolor: "var(--purple-color)",
+                      },
                     }}
                   >
                     <Box>
@@ -338,6 +348,11 @@ const Oneway = ({ setSelectedRadioValue }) => {
                       borderBottom: "1px solid var(--grey-color)",
                       padding: "0 10px",
                       marginTop: "5px",
+                      transition: "all 0.3s", // Add a smooth transition effect
+                      "&:hover": {
+                        color: "white",
+                        bgcolor: "var(--purple-color)",
+                      },
                     }}
                   >
                     <Box>
@@ -413,7 +428,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
                 bgcolor: "var(--white-color)",
                 boxShadow: 2,
                 zIndex: "50",
-                LLEFT: "50%",
+                left: "50%",
                 display: isTravelDate === true ? "block" : "none",
               }}
             >

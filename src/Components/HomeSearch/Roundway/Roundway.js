@@ -39,6 +39,10 @@ const Roundway = () => {
   // value area
 
   const [departureCode, setDepartureCode] = useState("DAC");
+  const [departureAddress, setDepartureAddress] = useState("Dhaka,BANGLADESH");
+  const [arrivalAddress, setArrivalAddress] = useState(
+    "Cox's Bazar,Bangladesh"
+  );
   const [arrivalCode, setArrivalCode] = useState("CXB");
   const [depCode, setDepCode] = useState("");
   const [arrCode, setArrCode] = useState("");
@@ -73,6 +77,8 @@ const Roundway = () => {
     navigate("/roundwayaftersearch", {
       state: {
         departureCode,
+        departureAddress,
+        arrivalAddress,
         arrivalCode,
         checkInDate: checkInDate.format("YYYY-MM-DD"),
         checkOutDate: checkOutDate.format("YYYY-MM-DD"),
@@ -256,7 +262,12 @@ const Roundway = () => {
                       alignItems: "center",
                       borderBottom: "1px solid var(--grey-color)",
                       padding: "0 10px",
-                      marginTop: "5px",
+
+                      transition: "all 0.3s", // Add a smooth transition effect
+                      "&:hover": {
+                        color: "white",
+                        bgcolor: "var(--purple-color)",
+                      },
                     }}
                   >
                     <Box>
@@ -340,7 +351,11 @@ const Roundway = () => {
                       alignItems: "center",
                       borderBottom: "1px solid var(--grey-color)",
                       padding: "0 10px",
-                      marginTop: "5px",
+                      transition: "all 0.3s", // Add a smooth transition effect
+                      "&:hover": {
+                        color: "white",
+                        bgcolor: "var(--purple-color)",
+                      },
                     }}
                   >
                     <Box>

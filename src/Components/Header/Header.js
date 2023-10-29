@@ -20,10 +20,8 @@ const Header = () => {
   return (
     <>
       <Navbar>
-        <Box
+        <Container
           sx={{
-            width: "70%",
-            margin: "0 auto",
             display: "flex",
             justifyContent: "space-between",
 
@@ -61,7 +59,7 @@ const Header = () => {
               Sign In
             </Button>
           </HeaderButtons>
-        </Box>
+        </Container>
       </Navbar>
     </>
   );

@@ -21,6 +21,11 @@ import ErrorIcon from "@mui/icons-material/Error";
 import dayjs from "dayjs";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import LuggageIcon from "@mui/icons-material/Luggage";
+import moment from "moment";
+import FareDetails from "../OnewayAfterSearch/FareDetails/FareDetails";
+import FareComission from "../OnewayAfterSearch/FareComission/FareComission";
+import FarePolicy from "../OnewayAfterSearch/FarePolicy/FarePolicy";
+import Baggage from "../OnewayAfterSearch/Baggage/Baggage";
 const RoundwayflightBox = ({ flight }) => {
   console.log(flight);
   const [expand, setExpand] = useState(false);
@@ -66,7 +71,7 @@ const RoundwayflightBox = ({ flight }) => {
                   item
                   xs={12}
                   sm={2}
-                  lg={2}
+                  lg={2.5}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -101,7 +106,7 @@ const RoundwayflightBox = ({ flight }) => {
                   item
                   xs={12}
                   sm={1.5}
-                  lg={1.5}
+                  lg={1.1}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -128,14 +133,15 @@ const RoundwayflightBox = ({ flight }) => {
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={4.6} lg={4.6}>
+                <Grid item xs={12} sm={4.6} lg={4.8}>
                   {/* go */}
                   <Box sx={{ textAlign: "center", marginTop: "34px" }}>
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         alignItems: "center",
+                        gap: "260px",
                       }}
                     >
                       <Typography sx={{ fontSize: "25px" }}>
@@ -154,7 +160,7 @@ const RoundwayflightBox = ({ flight }) => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            gap: "96px",
+                            gap: "80px",
                           }}
                         >
                           {flight?.segments.go.length === 3 && (
@@ -200,77 +206,86 @@ const RoundwayflightBox = ({ flight }) => {
                         (flight?.segments.go.length === 3 && (
                           <TwoStop style={{ width: "100%" }} />
                         ))}
-                      <Container>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: "60px",
-                          }}
-                        >
-                          {flight?.segments.go.length === 2 && (
-                            <React.Fragment>
-                              <Typography
-                                sx={{
-                                  fontSize: "10px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {dayjs(
-                                  flight?.segments.go.slice(0, -1)[0]
-                                    .arrivalTime
-                                ).format("hh:mm A")}
-                              </Typography>
-                            </React.Fragment>
-                          )}
-                          {flight?.segments.go.length === 3 && (
-                            <React.Fragment>
-                              <Typography
-                                sx={{
-                                  fontSize: "11px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {dayjs(
-                                  flight?.segments.go.slice(0, -1)[0]
-                                    .arrivalTime
-                                ).format("hh:mm A")}
-                              </Typography>
-                              <Typography
-                                sx={{
-                                  fontSize: "11px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {dayjs(
-                                  flight?.segments.go.slice(0, -1)[1]
-                                    .arrivalTime
-                                ).format("hh:mm A")}
-                              </Typography>
-                            </React.Fragment>
-                          )}
-                        </Box>
-                      </Container>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          gap: "60px",
+                        }}
+                      >
+                        {flight?.segments.go.length === 2 && (
+                          <React.Fragment>
+                            <Typography
+                              sx={{
+                                fontSize: "10px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(
+                                flight?.segments.go.slice(0, -1)[0].arrivalTime
+                              )}
+                            </Typography>
+                          </React.Fragment>
+                        )}
+                        {flight?.segments.go.length === 3 && (
+                          <React.Fragment>
+                            <Typography
+                              sx={{
+                                fontSize: "11px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(
+                                flight?.segments.go.slice(0, -1)[0].arrivalTime
+                              )}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "11px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(
+                                flight?.segments.go.slice(0, -1)[1].arrivalTime
+                              )}
+                            </Typography>
+                          </React.Fragment>
+                        )}
+                      </Box>
                     </Box>
 
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         alignItems: "center",
                         marginTop: "18px",
+                        gap: "242px",
                       }}
                     >
                       <Typography
-                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                        sx={{
+                          fontSize: "11px",
+                          color: "var(--grey-color)",
+                          whiteSpace: "nowrap", // Prevent line breaks
+                          display: "inline-block", // Make sure they are inline
+                          marginRight: "10px", // Add some spacing between the two elements
+                        }}
                       >
                         {dayjs(flight.godepartureTime, "HH:mm").format(
                           "hh:mm A"
                         )}{" "}
                       </Typography>
                       <Typography
-                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                        sx={{
+                          fontSize: "11px",
+                          color: "var(--grey-color)",
+                          whiteSpace: "nowrap", // Prevent line breaks
+                          display: "inline-block", // Make sure they are inline
+                          marginRight: "10px", // Add some spacing between the two elements
+                        }}
                       >
                         {dayjs(flight.goarrivalTime, "HH:mm").format("hh:mm A")}{" "}
                       </Typography>
@@ -281,8 +296,9 @@ const RoundwayflightBox = ({ flight }) => {
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         alignItems: "center",
+                        gap: "260px",
                       }}
                     >
                       <Typography sx={{ fontSize: "25px" }}>
@@ -301,7 +317,7 @@ const RoundwayflightBox = ({ flight }) => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            gap: "96px",
+                            gap: "80px",
                           }}
                         >
                           {flight?.segments.back.length === 3 && (
@@ -364,10 +380,10 @@ const RoundwayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {dayjs(
+                                {formatTimeWithAMPM(
                                   flight?.segments.back.slice(0, -1)[0]
-                                    .backarrivalTime
-                                ).format("hh:mm A")}
+                                    .arrivalTime
+                                )}
                               </Typography>
                             </React.Fragment>
                           )}
@@ -379,10 +395,10 @@ const RoundwayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {dayjs(
+                                {formatTimeWithAMPM(
                                   flight?.segments.back.slice(0, -1)[0]
-                                    .backarrivalTime
-                                ).format("hh:mm A")}
+                                    .arrivalTime
+                                )}
                               </Typography>
                               <Typography
                                 sx={{
@@ -390,10 +406,10 @@ const RoundwayflightBox = ({ flight }) => {
                                   color: "var(--grey-color)",
                                 }}
                               >
-                                {dayjs(
+                                {formatTimeWithAMPM(
                                   flight?.segments.back.slice(0, -1)[1]
-                                    .backarrivalTime
-                                ).format("hh:mm A")}
+                                    .arrivalTime
+                                )}
                               </Typography>
                             </React.Fragment>
                           )}
@@ -404,20 +420,31 @@ const RoundwayflightBox = ({ flight }) => {
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         alignItems: "center",
                         marginTop: "18px",
+                        gap: "261px",
                       }}
                     >
                       <Typography
-                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                        sx={{
+                          fontSize: "11px",
+                          color: "var(--grey-color)",
+                          whiteSpace: "nowrap", // Prevent line breaks
+                          display: "inline-block", // Make sure they are inline
+                        }}
                       >
                         {dayjs(flight.backdepartureTime, "HH:mm").format(
                           "hh:mm A"
                         )}{" "}
                       </Typography>
                       <Typography
-                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                        sx={{
+                          fontSize: "11px",
+                          color: "var(--grey-color)",
+                          whiteSpace: "nowrap", // Prevent line breaks
+                          display: "inline-block", // Make sure they are inline
+                        }}
                       >
                         {dayjs(flight.backarrivalTime, "HH:mm").format(
                           "hh:mm A"
@@ -430,7 +457,7 @@ const RoundwayflightBox = ({ flight }) => {
                   item
                   xs={12}
                   sm={1.9}
-                  lg={1.9}
+                  lg={1.5}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -503,7 +530,7 @@ const RoundwayflightBox = ({ flight }) => {
                   item
                   sm={2}
                   xs={12}
-                  lg={2}
+                  lg={2.1}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -544,7 +571,8 @@ const RoundwayflightBox = ({ flight }) => {
                 </Grid>
               </Grid>
 
-              <Grid container spacing={2}>
+              {/* more details area */}
+              <Grid container spacing={2} mt={1}>
                 <Grid item xs={12} sm={4} lg={4}>
                   <Typography
                     sx={{
@@ -718,13 +746,12 @@ const RoundwayflightBox = ({ flight }) => {
                   <Box
                     key={index}
                     sx={{
-                      width: "99%",
                       margin: "0 auto",
                       marginTop: "10px !important",
                     }}
                   >
                     <Grid container spacing={2}>
-                      <Grid item xs={12} sm={2} lg={2.3}>
+                      <Grid item xs={12} sm={2} lg={2.5}>
                         <Box>
                           <Box sx={{ width: "50px", height: "50px" }}>
                             <img
@@ -757,7 +784,7 @@ const RoundwayflightBox = ({ flight }) => {
                         xs={12}
                         sm={1.5}
                         md={1.2}
-                        lg={1.2}
+                        lg={1.1}
                         sx={{
                           display: "flex",
                           justifyContent: "center",
@@ -774,13 +801,14 @@ const RoundwayflightBox = ({ flight }) => {
                           />
                         </Box>
                       </Grid>
-                      <Grid item md={5.9} xs={12} sm={12} lg={4.6}>
+                      <Grid item md={5.9} xs={12} sm={12} lg={4.8}>
                         <Box sx={{ textAlign: "center" }}>
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "space-between",
+                              justifyContent: "center",
                               alignItems: "center",
+                              gap: "260px",
                             }}
                           >
                             <Typography sx={{ fontSize: "25px" }}>
@@ -820,15 +848,19 @@ const RoundwayflightBox = ({ flight }) => {
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "space-between",
+                              justifyContent: "center",
                               alignItems: "center",
                               marginTop: "18px",
+                              gap: "255px",
                             }}
                           >
                             <Typography
                               sx={{
                                 fontSize: "11px",
                                 color: "var(--grey-color)",
+                                whiteSpace: "nowrap", // Prevent line breaks
+                                display: "inline-block", // Make sure they are inline
+                                marginRight: "10px", // Add some spacing between the two elements
                               }}
                             >
                               {formatTimeWithAMPM(segment?.departureTime)}{" "}
@@ -837,6 +869,9 @@ const RoundwayflightBox = ({ flight }) => {
                               sx={{
                                 fontSize: "11px",
                                 color: "var(--grey-color)",
+                                whiteSpace: "nowrap", // Prevent line breaks
+                                display: "inline-block", // Make sure they are inline
+                                marginRight: "10px", // Add some spacing between the two elements
                               }}
                             >
                               {formatTimeWithAMPM(segment?.arrivalTime)}{" "}
@@ -849,7 +884,7 @@ const RoundwayflightBox = ({ flight }) => {
                         xs={12}
                         sm={12}
                         md={1.9}
-                        lg={1.9}
+                        lg={1.5}
                         sx={{
                           display: "flex",
                           justifyContent: "center",
@@ -892,7 +927,7 @@ const RoundwayflightBox = ({ flight }) => {
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid item sm={12} xs={12} lg={2}>
+                      <Grid item sm={12} xs={12} lg={2.1}>
                         <Box
                           sx={{
                             textAlign: "left",
@@ -943,7 +978,7 @@ const RoundwayflightBox = ({ flight }) => {
                         </Box>
                       </Grid>
                     </Grid>
-                    {index < flight.segments?.length - 1 && (
+                    {index < flight.segments.go?.length - 1 && (
                       <Container maxWidth="sm">
                         <Box
                           sx={{
@@ -964,13 +999,11 @@ const RoundwayflightBox = ({ flight }) => {
                             }}
                           >
                             Change Plane{" "}
-                            {flight.segments[index + 1]?.departureAirport}|{" "}
+                            {flight.segments.go[index + 1]?.departureAirport}|{" "}
                             {index === 1 &&
-                              flight.segments[index + 1]?.arrivalAirport}
+                              flight.segments.go[index + 1]?.arrivalAirport}
                             | Connecting time at{" "}
-                            {index < flight.transit.length
-                              ? flight.transit[index].split(":")[1]
-                              : ""}
+                            {flight.transit.go[index].split(":")[1] || "N/A"}
                           </Typography>
                         </Box>
                       </Container>
@@ -1014,7 +1047,7 @@ const RoundwayflightBox = ({ flight }) => {
                     }}
                   >
                     <Grid container spacing={2}>
-                      <Grid item xs={12} sm={2} lg={2.3}>
+                      <Grid item xs={12} sm={2} lg={2.5}>
                         <Box>
                           <Box sx={{ width: "50px", height: "50px" }}>
                             <img
@@ -1047,7 +1080,7 @@ const RoundwayflightBox = ({ flight }) => {
                         xs={12}
                         sm={1.5}
                         md={1.2}
-                        lg={1.2}
+                        lg={1.1}
                         sx={{
                           display: "flex",
                           justifyContent: "center",
@@ -1064,13 +1097,14 @@ const RoundwayflightBox = ({ flight }) => {
                           />
                         </Box>
                       </Grid>
-                      <Grid item md={5.9} xs={12} sm={12} lg={4.6}>
+                      <Grid item md={5.9} xs={12} sm={12} lg={4.8}>
                         <Box sx={{ textAlign: "center" }}>
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "space-between",
+                              justifyContent: "center",
                               alignItems: "center",
+                              gap: "260px",
                             }}
                           >
                             <Typography sx={{ fontSize: "25px" }}>
@@ -1110,15 +1144,19 @@ const RoundwayflightBox = ({ flight }) => {
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "space-between",
+                              justifyContent: "center",
                               alignItems: "center",
                               marginTop: "18px",
+                              gap: "255px",
                             }}
                           >
                             <Typography
                               sx={{
                                 fontSize: "11px",
                                 color: "var(--grey-color)",
+                                whiteSpace: "nowrap", // Prevent line breaks
+                                display: "inline-block", // Make sure they are inline
+                                marginRight: "10px", // Add some spacing between the two elements
                               }}
                             >
                               {formatTimeWithAMPM(segment?.departureTime)}{" "}
@@ -1127,6 +1165,9 @@ const RoundwayflightBox = ({ flight }) => {
                               sx={{
                                 fontSize: "11px",
                                 color: "var(--grey-color)",
+                                whiteSpace: "nowrap", // Prevent line breaks
+                                display: "inline-block", // Make sure they are inline
+                                marginRight: "10px", // Add some spacing between the two elements
                               }}
                             >
                               {formatTimeWithAMPM(segment?.arrivalTime)}{" "}
@@ -1139,7 +1180,7 @@ const RoundwayflightBox = ({ flight }) => {
                         xs={12}
                         sm={12}
                         md={1.9}
-                        lg={1.9}
+                        lg={1.5}
                         sx={{
                           display: "flex",
                           justifyContent: "center",
@@ -1182,7 +1223,7 @@ const RoundwayflightBox = ({ flight }) => {
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid item sm={12} xs={12} lg={2}>
+                      <Grid item sm={12} xs={12} lg={2.1}>
                         <Box
                           sx={{
                             textAlign: "left",
@@ -1233,7 +1274,7 @@ const RoundwayflightBox = ({ flight }) => {
                         </Box>
                       </Grid>
                     </Grid>
-                    {index < flight.segments?.length - 1 && (
+                    {index < flight.segments.back?.length - 1 && (
                       <Container maxWidth="sm">
                         <Box
                           sx={{
@@ -1254,13 +1295,11 @@ const RoundwayflightBox = ({ flight }) => {
                             }}
                           >
                             Change Plane{" "}
-                            {flight.segments[index + 1]?.departureAirport}|{" "}
+                            {flight.segments.back[index + 1]?.departureAirport}|{" "}
                             {index === 1 &&
-                              flight.segments[index + 1]?.arrivalAirport}
+                              flight.segments.back[index + 1]?.arrivalAirport}
                             | Connecting time at{" "}
-                            {index < flight.transit.length
-                              ? flight.transit[index].split(":")[1]
-                              : ""}
+                            {flight.transit.back[index].split(":")[1] || "N/A"}
                           </Typography>
                         </Box>
                       </Container>
@@ -1270,15 +1309,17 @@ const RoundwayflightBox = ({ flight }) => {
               </FlightDetails>
             )}
             {/* fare details */}
-            {activeTab === "fareDetails" && "fareDetails"}
+            {activeTab === "fareDetails" && <FareDetails flight={flight} />}
 
             {/* fare Commission*/}
-            {activeTab === "fareCommission" && "fareCommission"}
+            {activeTab === "fareCommission" && (
+              <FareComission flight={flight} />
+            )}
             {/* fare Policiy*/}
-            {activeTab === "farePolicy" && "farePolicy"}
+            {activeTab === "farePolicy" && <FarePolicy />}
 
             {/*Baggage*/}
-            {activeTab === "baggage" && "baggage"}
+            {activeTab === "baggage" && <Baggage flight={flight} />}
           </AccordionDetails>
         </Accordion>
       </Box>

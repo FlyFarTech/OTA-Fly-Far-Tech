@@ -59,14 +59,14 @@ const OnewayflightBox = ({ flight }) => {
         sx={{
           bgcolor: "var(--white-color)",
           borderRadius: "5px",
-          marginTop: "25px",
+          marginTop: "26.9px",
         }}
       >
         <OnewayflightBox>
           <Box sx={{ paddingBottom: "15px", borderRadius: "5px" }}>
             <Container>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={12} md={3} lg={2.3}>
+                <Grid item xs={12} sm={12} md={3} lg={2.5}>
                   <Box>
                     <Box sx={{ width: "50px", height: "50px" }}>
                       <img
@@ -96,7 +96,7 @@ const OnewayflightBox = ({ flight }) => {
                   xs={12}
                   sm={1.5}
                   md={1.2}
-                  lg={1.2}
+                  lg={1.1}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -113,13 +113,14 @@ const OnewayflightBox = ({ flight }) => {
                     />
                   </Box>
                 </Grid>
-                <Grid item md={5.9} xs={12} sm={12} lg={4.6}>
+                <Grid item md={5.9} xs={12} sm={12} lg={4.8}>
                   <Box sx={{ textAlign: "center" }}>
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         alignItems: "center",
+                        gap: "260px",
                       }}
                     >
                       <Typography sx={{ fontSize: "25px" }}>
@@ -131,49 +132,48 @@ const OnewayflightBox = ({ flight }) => {
                       </Typography>
                     </Box>
                     <Box>
-                      <Container>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: "96px",
-                          }}
-                        >
-                          {flight?.segments.length === 3 && (
-                            <React.Fragment>
-                              <Typography
-                                sx={{
-                                  fontSize: "10px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {flight?.segments.slice(0, -1)[0].arrival}
-                              </Typography>
-                              <Typography
-                                sx={{
-                                  fontSize: "10px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {flight?.segments.slice(0, -1)[1].arrival}
-                              </Typography>
-                            </React.Fragment>
-                          )}
-                          {flight?.segments.length === 2 && (
-                            <React.Fragment>
-                              <Typography
-                                sx={{
-                                  fontSize: "10px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {flight?.segments.slice(0, -1)[0].arrival}
-                              </Typography>
-                            </React.Fragment>
-                          )}
-                        </Box>
-                      </Container>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          gap: "80px",
+                        }}
+                      >
+                        {flight?.segments.length === 3 && (
+                          <React.Fragment>
+                            <Typography
+                              sx={{
+                                fontSize: "10px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {flight?.segments.slice(0, -1)[0].arrival}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "10px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {flight?.segments.slice(0, -1)[1].arrival}
+                            </Typography>
+                          </React.Fragment>
+                        )}
+                        {flight?.segments.length === 2 && (
+                          <React.Fragment>
+                            <Typography
+                              sx={{
+                                fontSize: "10px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {flight?.segments.slice(0, -1)[0].arrival}
+                            </Typography>
+                          </React.Fragment>
+                        )}
+                      </Box>
+
                       {(flight?.segments.length === 1 && (
                         <Lines style={{ width: "100%" }} />
                       )) ||
@@ -183,78 +183,89 @@ const OnewayflightBox = ({ flight }) => {
                         (flight?.segments.length === 3 && (
                           <TwoStop style={{ width: "100%" }} />
                         ))}
-                      <Container>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            gap: "60px",
-                          }}
-                        >
-                          {flight?.segments.length === 2 && (
-                            <React.Fragment>
-                              <Typography
-                                sx={{
-                                  fontSize: "10px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {formatTimeWithAMPM(
-                                  flight?.segments.slice(0, -1)[0].arrivalTime
-                                )}
-                              </Typography>
-                            </React.Fragment>
-                          )}
-                          {flight?.segments.length === 3 && (
-                            <React.Fragment>
-                              <Typography
-                                sx={{
-                                  fontSize: "11px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {formatTimeWithAMPM(
-                                  flight?.segments.slice(0, -1)[0].arrivalTime
-                                )}
-                              </Typography>
-                              <Typography
-                                sx={{
-                                  fontSize: "11px",
-                                  color: "var(--grey-color)",
-                                }}
-                              >
-                                {formatTimeWithAMPM(
-                                  flight?.segments.slice(0, -1)[1].arrivalTime
-                                )}
-                              </Typography>
-                            </React.Fragment>
-                          )}
-                        </Box>
-                      </Container>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          gap: "60px",
+                        }}
+                      >
+                        {flight?.segments.length === 2 && (
+                          <React.Fragment>
+                            <Typography
+                              sx={{
+                                fontSize: "10px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(
+                                flight?.segments.slice(0, -1)[0].arrivalTime
+                              )}
+                            </Typography>
+                          </React.Fragment>
+                        )}
+                        {flight?.segments.length === 3 && (
+                          <React.Fragment>
+                            <Typography
+                              sx={{
+                                fontSize: "11px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(
+                                flight?.segments.slice(0, -1)[0].arrivalTime
+                              )}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "11px",
+                                color: "var(--grey-color)",
+                              }}
+                            >
+                              {formatTimeWithAMPM(
+                                flight?.segments.slice(0, -1)[1].arrivalTime
+                              )}
+                            </Typography>
+                          </React.Fragment>
+                        )}
+                      </Box>
                     </Box>
 
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         alignItems: "center",
                         marginTop: "18px",
+                        gap: "250px",
                       }}
                     >
                       <Typography
-                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                        sx={{
+                          fontSize: "11px",
+                          color: "var(--grey-color)",
+                          whiteSpace: "nowrap", // Prevent line breaks
+                          display: "inline-block", // Make sure they are inline
+                          marginRight: "10px", // Add some spacing between the two elements
+                        }}
                       >
                         {formatTimeWithAMPM(
                           flight.segments.slice(0, 1)[0].departureTime
-                        )}{" "}
+                        )}
                       </Typography>
                       <Typography
-                        sx={{ fontSize: "11px", color: "var(--grey-color)" }}
+                        sx={{
+                          fontSize: "11px",
+                          color: "var(--grey-color)",
+                          whiteSpace: "nowrap", // Prevent line breaks
+                          display: "inline-block", // Make sure they are inline
+                        }}
                       >
                         {formatTimeWithAMPM(
                           flight.segments.slice(-1)[0].arrivalTime
-                        )}{" "}
+                        )}
                       </Typography>
                     </Box>
                   </Box>
@@ -264,7 +275,7 @@ const OnewayflightBox = ({ flight }) => {
                   xs={12}
                   sm={12}
                   md={1.9}
-                  lg={1.9}
+                  lg={1.5}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -301,7 +312,7 @@ const OnewayflightBox = ({ flight }) => {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item sm={12} xs={12} lg={2}>
+                <Grid item sm={12} xs={12} lg={2.1}>
                   <Box sx={{ textAlign: "right" }}>
                     <Typography
                       sx={{
@@ -339,8 +350,8 @@ const OnewayflightBox = ({ flight }) => {
                   </Box>
                 </Grid>
               </Grid>
-
-              <Grid container spacing={2}>
+              {/* more details area */}
+              <Grid container spacing={2} mt={1}>
                 <Grid item xs={12} sm={12} lg={4}>
                   <Typography
                     sx={{
@@ -515,13 +526,12 @@ const OnewayflightBox = ({ flight }) => {
                   <Box
                     key={index}
                     sx={{
-                      width: "99%",
                       margin: "0 auto",
                       marginTop: "10px !important",
                     }}
                   >
                     <Grid container spacing={2}>
-                      <Grid item xs={12} sm={2} lg={2.3}>
+                      <Grid item xs={12} sm={2} lg={2.5}>
                         <Box>
                           <Box sx={{ width: "50px", height: "50px" }}>
                             <img
@@ -554,7 +564,7 @@ const OnewayflightBox = ({ flight }) => {
                         xs={12}
                         sm={1.5}
                         md={1.2}
-                        lg={1.2}
+                        lg={1.1}
                         sx={{
                           display: "flex",
                           justifyContent: "center",
@@ -571,13 +581,14 @@ const OnewayflightBox = ({ flight }) => {
                           />
                         </Box>
                       </Grid>
-                      <Grid item md={5.9} xs={12} sm={12} lg={4.6}>
+                      <Grid item md={5.9} xs={12} sm={12} lg={4.8}>
                         <Box sx={{ textAlign: "center" }}>
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "space-between",
+                              justifyContent: "center",
                               alignItems: "center",
+                              gap: "260px",
                             }}
                           >
                             <Typography sx={{ fontSize: "25px" }}>
@@ -589,54 +600,39 @@ const OnewayflightBox = ({ flight }) => {
                             </Typography>
                           </Box>
                           <Box>
-                            <Container>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  gap: "96px",
-                                }}
-                              ></Box>
-                            </Container>
-
                             <Lines style={{ width: "100%" }} />
-
-                            <Container>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  gap: "60px",
-                                }}
-                              ></Box>
-                            </Container>
                           </Box>
 
                           <Box
                             sx={{
                               display: "flex",
-                              justifyContent: "space-between",
+                              justifyContent: "center",
                               alignItems: "center",
                               marginTop: "18px",
+                              gap: "250px",
                             }}
                           >
                             <Typography
                               sx={{
                                 fontSize: "11px",
                                 color: "var(--grey-color)",
+                                whiteSpace: "nowrap", // Prevent line breaks
+                                display: "inline-block", // Make sure they are inline
+                                marginRight: "10px", // Add some spacing between the two elements
                               }}
                             >
-                              {formatTimeWithAMPM(segment?.departureTime)}{" "}
+                              {formatTimeWithAMPM(segment?.departureTime)}
                             </Typography>
                             <Typography
                               sx={{
                                 fontSize: "11px",
                                 color: "var(--grey-color)",
+                                whiteSpace: "nowrap", // Prevent line breaks
+                                display: "inline-block", // Make sure they are inline
                               }}
                             >
-                              {formatTimeWithAMPM(segment?.arrivalTime)}{" "}
+                              {" "}
+                              {formatTimeWithAMPM(segment?.arrivalTime)}
                             </Typography>
                           </Box>
                         </Box>
@@ -646,7 +642,7 @@ const OnewayflightBox = ({ flight }) => {
                         xs={12}
                         sm={12}
                         md={1.9}
-                        lg={1.9}
+                        lg={1.5}
                         sx={{
                           display: "flex",
                           justifyContent: "center",
@@ -689,7 +685,7 @@ const OnewayflightBox = ({ flight }) => {
                           </Box>
                         </Box>
                       </Grid>
-                      <Grid item sm={12} xs={12} lg={2}>
+                      <Grid item sm={12} xs={12} lg={2.1}>
                         <Box
                           sx={{
                             textAlign: "left",

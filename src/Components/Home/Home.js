@@ -30,11 +30,13 @@ const Home = () => {
             left: "0%",
             right: "0%",
             paddingTop: "107px",
-            width: "70%",
+
             margin: "0 auto",
           }}
         >
-          <HomeSearch />
+          <Container>
+            <HomeSearch />
+          </Container>
         </Box>
 
         <Banner

@@ -9,7 +9,8 @@
   ---tabcolor: #6665decf;
   --main-bgcolor: #f6f4ff;
   --deep-purple-color: #dad4ff;
---explore-more-color:#D9D9D9;
+  --explore-more-color: #d9d9d9;
+  ---border-color: #f5f7fa;
 }
 @font-face {
   font-family: "ptroot";
