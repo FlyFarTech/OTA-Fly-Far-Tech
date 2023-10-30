@@ -26,12 +26,12 @@ import FarePolicy from "../FarePolicy/FarePolicy";
 import Baggage from "../Baggage/Baggage";
 import dayjs from "dayjs";
 const OnewayflightBox = ({ flight }) => {
-  console.log(flight);
   const [expand, setExpand] = useState(false);
   let OnewayflightBox = styled(Box)({
     backgroundColor: "var(--white-color)",
     borderRadius: "5px",
   });
+
   let TabBoxes = styled(Box)({
     display: "flex",
     justifyContent: "center",

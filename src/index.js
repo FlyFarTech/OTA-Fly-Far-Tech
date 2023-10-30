@@ -8,6 +8,8 @@ import Main from "./Components/Main/Main";
 import Home from "./Components/Home/Home";
 import OnewayAfterSearch from "./Components/OnewayAfterSearch/OnewayAfterSearch";
 import RoundwayAfterSearch from "./Components/RoundwayAfterSearch/RoundwayAfterSearch";
+import Signin from "./Components/Signin/Signin";
+import Signup from "./Components/Signup/Signup";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +26,14 @@ const router = createBrowserRouter([
       {
         path: "/roundwayaftersearch",
         element: <RoundwayAfterSearch />,
+      },
+      {
+        path: "/signin",
+        element: <Signin />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
       },
     ],
   },

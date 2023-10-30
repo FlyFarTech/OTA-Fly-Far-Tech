@@ -36,28 +36,38 @@ const Header = () => {
           </Link>
 
           <HeaderButtons sx={{ marginTop: { xs: "12px", sm: "" } }}>
-            <Button
-              variant="contained"
-              sx={{
-                boxShadow: "none",
-                textTransform: "capitalize",
-                bgcolor: "var(--purple-color)",
-                fontWeight: "700",
-              }}
-            >
-              Agent Sign In
-            </Button>
-            <Button
-              variant="contained"
-              sx={{
-                boxShadow: "none",
-                textTransform: "capitalize",
-                bgcolor: "var(--purple-color)",
-                fontWeight: "700",
-              }}
-            >
-              Sign In
-            </Button>
+            <Link to="/signin">
+              <Button
+                variant="contained"
+                sx={{
+                  boxShadow: "none",
+                  textTransform: "capitalize",
+                  bgcolor: "var(--purple-color)",
+                  fontWeight: "700",
+                  "&:hover": {
+                    background: "var(--hover-purple-color)",
+                  },
+                }}
+              >
+                Agent Sign In
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button
+                variant="contained"
+                sx={{
+                  boxShadow: "none",
+                  textTransform: "capitalize",
+                  bgcolor: "var(--purple-color)",
+                  fontWeight: "700",
+                  "&:hover": {
+                    background: "var(--hover-purple-color)",
+                  },
+                }}
+              >
+                Sign Up
+              </Button>
+            </Link>
           </HeaderButtons>
         </Container>
       </Navbar>

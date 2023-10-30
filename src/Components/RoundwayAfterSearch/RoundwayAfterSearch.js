@@ -20,7 +20,10 @@ const RoundwayAfterSearch = () => {
   let returnDate = location?.state?.checkOutDate;
   let adultCount = location?.state?.adultCount;
   let childCount = location?.state?.childCount;
-  let infantCount = location?.state?.childCount;
+  let infantCount = location?.state?.infantCount;
+  let totalPassenger = location?.state?.totalPassenger;
+  let flightClass = location?.state?.flightClass;
+
   let [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     fetch(
@@ -56,6 +59,8 @@ const RoundwayAfterSearch = () => {
           childCount={childCount}
           infantCount={infantCount}
           returnDate={returnDate}
+          totalPassenger={totalPassenger}
+          flightClass={flightClass}
         />
       </Box>
 

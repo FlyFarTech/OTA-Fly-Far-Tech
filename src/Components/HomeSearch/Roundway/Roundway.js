@@ -86,6 +86,7 @@ const Roundway = () => {
         childCount,
         infantCount,
         flightClass,
+        totalPassenger,
       },
     });
   };
@@ -342,6 +343,7 @@ const Roundway = () => {
                       setArrivalCode(result?.code);
                       setArrCode(result?.code);
                       setIsArrival(false);
+                      setArrivalAddress(result?.Address);
                     }}
                     key={index}
                     sx={{

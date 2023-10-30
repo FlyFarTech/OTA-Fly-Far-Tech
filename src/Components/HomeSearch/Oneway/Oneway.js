@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Box,
@@ -39,7 +39,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
   const [departureCode, setDepartureCode] = useState("DAC");
   const [arrivalCode, setArrivalCode] = useState("CXB");
   const [departureAddress, setDepartureAddress] = useState("Dhaka,BANGLADESH");
-
+  const [arrivalAddress, setArrivalAddress] = useState(
+    "Cox's Bazar,Bangladesh"
+  );
   const [depCode, setDepCode] = useState("");
   const [arrCode, setArrCode] = useState("");
   const [checkInDate, setCheckInDate] = useState(dayjs(new Date()));
@@ -58,7 +60,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
 
   // toggle change flight
   const [isToggle, setisToggle] = useState(true);
-  const [isBack, setIsBack] = useState(false);
+  const [toggle, setToggle] = useState(true);
   let handleOutsideClick = () => {
     setIsDeparture(false);
     setIsArrival(false);
@@ -66,20 +68,39 @@ const Oneway = ({ setSelectedRadioValue }) => {
     setIsPassenger(false);
   };
 
+  console.log(infantCount);
   let handleOneWayASearch = () => {
     navigate("/onewayaftersearch", {
       state: {
         departureCode,
         departureAddress,
-
         arrivalCode,
         checkInDate: checkInDate.format("YYYY-MM-DD"),
         adultCount,
         childCount,
         infantCount,
         flightClass,
+        arrivalAddress,
+        totalPassenger,
       },
     });
+  };
+  const handleToggle = () => {
+    if (isToggle) {
+      // If it's currently on departure, switch to arrival
+      setArrivalCode(departureCode);
+      setDepartureCode(arrivalCode);
+      // Also swap the addresses
+      setArrivalAddress(departureAddress);
+      setDepartureAddress(arrivalAddress);
+    } else {
+      // If it's currently on arrival, switch to departure
+      setDepartureCode(arrivalCode);
+      setArrivalCode(departureCode);
+      // Also swap the addresses
+      setDepartureAddress(arrivalAddress);
+      setArrivalAddress(departureAddress);
+    }
   };
   return (
     <ClickAwayListener onClickAway={handleOutsideClick}>
@@ -143,12 +164,17 @@ const Oneway = ({ setSelectedRadioValue }) => {
               >
                 {isToggle ? (
                   <Front
-                    onClick={() => setisToggle(true)}
+                    onClick={(e) => {
+                      handleToggle();
+                      setisToggle(true);
+                    }}
                     style={{ height: "20px" }}
                   />
                 ) : (
                   <Back
-                    onClick={() => setisToggle(true)}
+                    onClick={(e) => {
+                      setisToggle(true);
+                    }}
                     style={{ transform: "rotate(180deg)", height: "20px" }}
                   />
                 )}
@@ -156,11 +182,15 @@ const Oneway = ({ setSelectedRadioValue }) => {
                 {isToggle ? (
                   <Back
                     style={{ height: "20px" }}
-                    onClick={() => setisToggle(false)}
+                    onClick={(e) => {
+                      setisToggle(false);
+                    }}
                   />
                 ) : (
                   <Front
-                    onClick={() => setisToggle(true)}
+                    onClick={(e) => {
+                      setisToggle(true);
+                    }}
                     style={{ transform: "rotate(180deg)", height: "20px" }}
                   />
                 )}
@@ -254,7 +284,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
                       justifyContent: "space-between",
                       alignItems: "center",
                       borderBottom: "1px solid var(--grey-color)",
-                      padding: "0 10px",
+                      padding: "0px 10px",
 
                       transition: "all 0.3s", // Add a smooth transition effect
                       "&:hover": {
@@ -335,7 +365,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
                       setArrivalCode(result?.code);
                       // setArrivalCode(result?.code);
                       setArrCode(result?.code);
-
+                      setArrivalAddress(result?.Address);
                       setIsArrival(false);
                       setIsTravelDate(true);
                     }}
@@ -346,8 +376,8 @@ const Oneway = ({ setSelectedRadioValue }) => {
                       justifyContent: "space-between",
                       alignItems: "center",
                       borderBottom: "1px solid var(--grey-color)",
-                      padding: "0 10px",
-                      marginTop: "5px",
+                      padding: "0px 10px",
+
                       transition: "all 0.3s", // Add a smooth transition effect
                       "&:hover": {
                         color: "white",
@@ -565,6 +595,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                         minWidth: "20px",
                         minHeight: "20px",
                         bgcolor: "var( --purple-color)",
+                        "&:hover": {
+                          background: "var(--hover-purple-color)",
+                        },
                       }}
                     >
                       +
@@ -586,6 +619,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                         minHeight: "20px",
                         marginLeft: "8px",
                         bgcolor: "var( --purple-color)",
+                        "&:hover": {
+                          background: "var(--hover-purple-color)",
+                        },
                       }}
                     >
                       -
@@ -631,6 +667,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                         minWidth: "20px",
                         minHeight: "20px",
                         bgcolor: "var( --purple-color)",
+                        "&:hover": {
+                          background: "var(--hover-purple-color)",
+                        },
                       }}
                     >
                       +
@@ -647,6 +686,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                         minHeight: "20px",
                         marginLeft: "8px",
                         bgcolor: "var( --purple-color)",
+                        "&:hover": {
+                          background: "var(--hover-purple-color)",
+                        },
                       }}
                     >
                       -
@@ -693,6 +735,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                         minWidth: "20px",
                         minHeight: "20px",
                         bgcolor: "var( --purple-color)",
+                        "&:hover": {
+                          background: "var(--hover-purple-color)",
+                        },
                       }}
                     >
                       +
@@ -704,6 +749,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                         minHeight: "20px",
                         marginLeft: "8px",
                         bgcolor: "var( --purple-color)",
+                        "&:hover": {
+                          background: "var(--hover-purple-color)",
+                        },
                       }}
                       onClick={() => {
                         if (infantCount > 0) {
@@ -805,6 +853,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                     color: "var(--white-color)",
                     textTransform: "capitalize",
                     padding: "5px 30px",
+                    "&:hover": {
+                      background: "var(--hover-purple-color)",
+                    },
                   }}
                 >
                   Done
@@ -855,6 +906,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
                 textTransform: "capitalize",
                 fontWeight: "700",
                 fontSize: "15px",
+                "&:hover": {
+                  background: "var(--hover-purple-color)",
+                },
               }}
               startIcon={<SendIcon sx={{ transform: "rotate(-50deg)" }} />}
             >
