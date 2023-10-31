@@ -11,6 +11,7 @@ import {
   Grid,
   Radio,
   RadioGroup,
+  Slider,
   TextField,
   Typography,
 } from "@mui/material";
@@ -23,7 +24,9 @@ import dayjs from "dayjs";
 import { ReactComponent as Front } from "./../front.svg";
 import { ReactComponent as Back } from "./../back.svg";
 import { useNavigate } from "react-router-dom";
+
 const Oneway = ({ setSelectedRadioValue }) => {
+  const [isToggle, setisToggle] = useState(true);
   const [searchQuery, setSearchQuery] = useState(""); // State to store the search query
   const navigate = useNavigate();
   const handleInputChange = (event) => {
@@ -44,7 +47,9 @@ const Oneway = ({ setSelectedRadioValue }) => {
   );
   const [depCode, setDepCode] = useState("");
   const [arrCode, setArrCode] = useState("");
-  const [checkInDate, setCheckInDate] = useState(dayjs(new Date()));
+  const [checkInDate, setCheckInDate] = useState(
+    dayjs(new Date()).add(1, "day")
+  );
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
@@ -59,7 +64,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
   const [isPassenger, setIsPassenger] = useState(false);
 
   // toggle change flight
-  const [isToggle, setisToggle] = useState(true);
+
   const [toggle, setToggle] = useState(true);
   let handleOutsideClick = () => {
     setIsDeparture(false);
@@ -85,7 +90,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
       },
     });
   };
-  const handleToggle = () => {
+  let handleToggle = () => {
     if (isToggle) {
       // If it's currently on departure, switch to arrival
       setArrivalCode(departureCode);
@@ -102,6 +107,13 @@ const Oneway = ({ setSelectedRadioValue }) => {
       setArrivalAddress(departureAddress);
     }
   };
+
+  const isDateInPast = (date) => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set the time to midnight for comparison
+    return date < currentDate;
+  };
+
   return (
     <ClickAwayListener onClickAway={handleOutsideClick}>
       <Box>
@@ -165,7 +177,6 @@ const Oneway = ({ setSelectedRadioValue }) => {
                 {isToggle ? (
                   <Front
                     onClick={(e) => {
-                      handleToggle();
                       setisToggle(true);
                     }}
                     style={{ height: "20px" }}
@@ -464,6 +475,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
             >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar
+                  shouldDisableDate={isDateInPast}
                   value={checkInDate}
                   onChange={(date) => {
                     setCheckInDate(date);

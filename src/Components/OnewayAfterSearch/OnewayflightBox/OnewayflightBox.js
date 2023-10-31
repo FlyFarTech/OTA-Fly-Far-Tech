@@ -342,6 +342,10 @@ const OnewayflightBox = ({ flight }) => {
                           textTransform: "capitalize",
                           boxShadow: "none",
                           borderRadius: "30px",
+                          "&:hover": {
+                            background: "var(--hover-purple-color)",
+                            color: "var(--white-color)",
+                          },
                         }}
                       >
                         Select
@@ -406,6 +410,10 @@ const OnewayflightBox = ({ flight }) => {
                 <Button
                   variant="contained"
                   sx={{
+                    "&:hover": {
+                      background: "var(--hover-purple-color)",
+                      color: "var(--white-color)",
+                    },
                     boxShadow: "none",
                     padding: "9px 16px",
                     borderRadius: "21px",
@@ -429,6 +437,10 @@ const OnewayflightBox = ({ flight }) => {
                 <Button
                   variant="contained"
                   sx={{
+                    "&:hover": {
+                      background: "var(--hover-purple-color)",
+                      color: "var(--white-color)",
+                    },
                     boxShadow: "none",
                     padding: "9px 16px",
                     borderRadius: "21px",
@@ -452,6 +464,10 @@ const OnewayflightBox = ({ flight }) => {
                 <Button
                   variant="contained"
                   sx={{
+                    "&:hover": {
+                      background: "var(--hover-purple-color)",
+                      color: "var(--white-color)",
+                    },
                     boxShadow: "none",
                     padding: "9px 16px",
                     borderRadius: "21px",
@@ -475,6 +491,10 @@ const OnewayflightBox = ({ flight }) => {
                 <Button
                   variant="contained"
                   sx={{
+                    "&:hover": {
+                      background: "var(--hover-purple-color)",
+                      color: "var(--white-color)",
+                    },
                     boxShadow: "none",
                     padding: "9px 16px",
                     borderRadius: "21px",
@@ -498,6 +518,10 @@ const OnewayflightBox = ({ flight }) => {
                 <Button
                   variant="contained"
                   sx={{
+                    "&:hover": {
+                      background: "var(--hover-purple-color)",
+                      color: "var(--white-color)",
+                    },
                     boxShadow: "none",
                     padding: "9px 16px",
                     borderRadius: "21px",

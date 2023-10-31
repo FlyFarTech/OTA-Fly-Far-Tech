@@ -46,8 +46,12 @@ const Roundway = () => {
   const [arrivalCode, setArrivalCode] = useState("CXB");
   const [depCode, setDepCode] = useState("");
   const [arrCode, setArrCode] = useState("");
-  const [checkInDate, setCheckInDate] = useState(dayjs(new Date()));
-  const [checkOutDate, setCheckOutDate] = useState(dayjs(new Date()));
+  const [checkInDate, setCheckInDate] = useState(
+    dayjs(new Date()).add(1, "day")
+  );
+  const [checkOutDate, setCheckOutDate] = useState(
+    dayjs(new Date()).add(2, "day")
+  );
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
   const [infantCount, setInfantCount] = useState(0);
@@ -90,6 +94,13 @@ const Roundway = () => {
       },
     });
   };
+
+  const isDateInPastOrToday = (date) => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for accurate comparison
+    return date < currentDate;
+  };
+
   return (
     <ClickAwayListener onClickAway={handleOutsideClick}>
       <Box>
@@ -437,6 +448,7 @@ const Roundway = () => {
             >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar
+                  shouldDisableDate={isDateInPastOrToday}
                   value={checkInDate}
                   onChange={(date) => {
                     setCheckInDate(date);
@@ -493,6 +505,7 @@ const Roundway = () => {
             >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateCalendar
+                  shouldDisableDate={isDateInPastOrToday}
                   value={checkOutDate}
                   onChange={(date) => {
                     setCheckOutDate(date);

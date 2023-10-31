@@ -35,6 +35,12 @@ const AfterSearchBox = ({
   departureAddress,
   totalPassenger,
   flightClass,
+  setDeparture,
+  setArrival,
+  setDeparDate,
+  setAdult,
+  setChild,
+  setInfant,
 }) => {
   const navigate = useNavigate();
   const [selectedRadioValue, setSelectedRadioValue] = useState("One Way");
@@ -84,6 +90,15 @@ const AfterSearchBox = ({
     setIsTravelDate(false);
     setIsReturnDate(false);
     setIsPassenger(false);
+  };
+
+  let handleOneway = () => {
+    setDeparture(depCode);
+    setArrival(arrCode);
+    setDeparDate(journeyDate);
+    setAdult(adultNumberCount);
+    setChild(childNumberCount);
+    setInfant(infantNumberCount);
   };
 
   return (
@@ -276,6 +291,13 @@ const AfterSearchBox = ({
               <Box
                 onClick={() => {
                   setIsToggle(!isToggle);
+                  if (!isToggle) {
+                    setDepCode(arrCode);
+                    setArrCode(depCode);
+                  } else {
+                    setDepCode(departureCode);
+                    setArrCode(arrivalCode);
+                  }
                 }}
                 sx={{
                   height: "25px",
@@ -287,9 +309,15 @@ const AfterSearchBox = ({
                   left: "19.5%",
                   top: "35%",
                   cursor: "pointer",
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <CompareArrowsIcon sx={{ color: "var(--white-color)" }} />
+                <CompareArrowsIcon
+                  sx={{ color: "var(--white-color)", fontSize: "20px" }}
+                />
               </Box>
               <Grid item xs={12} md={6} lg={2.5} sx={{ position: "relative" }}>
                 <Box
@@ -457,6 +485,7 @@ const AfterSearchBox = ({
                         const newJourneyDate = dayjs(journeyDate)
                           .subtract(1, "day")
                           .format("ddd, DD MMM YYYY");
+                        setDeparDate(newJourneyDate);
                         setJourneyDate(newJourneyDate);
                         setIsTravelDate(false);
                       }}
@@ -468,6 +497,7 @@ const AfterSearchBox = ({
                         const newJourneyDate = dayjs(journeyDate)
                           .add(1, "day")
                           .format("ddd, DD MMM YYYY");
+                        setDeparDate(newJourneyDate);
                         setJourneyDate(newJourneyDate);
                       }}
                     />
@@ -749,6 +779,9 @@ const AfterSearchBox = ({
                             minWidth: "20px",
                             minHeight: "20px",
                             bgcolor: "var( --purple-color)",
+                            "&:hover": {
+                              background: "var(--hover-purple-color)",
+                            },
                           }}
                         >
                           +
@@ -771,6 +804,9 @@ const AfterSearchBox = ({
                             minHeight: "20px",
                             marginLeft: "2px",
                             bgcolor: "var( --purple-color)",
+                            "&:hover": {
+                              background: "var(--hover-purple-color)",
+                            },
                           }}
                         >
                           -
@@ -827,6 +863,9 @@ const AfterSearchBox = ({
                             minWidth: "20px",
                             minHeight: "20px",
                             bgcolor: "var( --purple-color)",
+                            "&:hover": {
+                              background: "var(--hover-purple-color)",
+                            },
                           }}
                         >
                           +
@@ -844,6 +883,9 @@ const AfterSearchBox = ({
                             minHeight: "20px",
                             marginLeft: "2px",
                             bgcolor: "var( --purple-color)",
+                            "&:hover": {
+                              background: "var(--hover-purple-color)",
+                            },
                           }}
                         >
                           -
@@ -901,6 +943,9 @@ const AfterSearchBox = ({
                             minWidth: "20px",
                             minHeight: "20px",
                             bgcolor: "var( --purple-color)",
+                            "&:hover": {
+                              background: "var(--hover-purple-color)",
+                            },
                           }}
                         >
                           +
@@ -916,7 +961,9 @@ const AfterSearchBox = ({
                           sx={{
                             minWidth: "20px",
                             minHeight: "20px",
-
+                            "&:hover": {
+                              background: "var(--hover-purple-color)",
+                            },
                             bgcolor: "var( --purple-color)",
                           }}
                         >
@@ -1017,6 +1064,9 @@ const AfterSearchBox = ({
                         color: "var(--white-color)",
                         textTransform: "capitalize",
                         padding: "5px 30px",
+                        "&:hover": {
+                          background: "var(--hover-purple-color)",
+                        },
                       }}
                     >
                       Done
@@ -1028,37 +1078,9 @@ const AfterSearchBox = ({
                 <Box sx={{ height: "100%", width: "100%" }}>
                   <Button
                     onClick={() => {
-                      {
-                        selectedRadioValue === "One Way"
-                          ? navigate("/onewayaftersearch", {
-                              state: {
-                                depAddress,
-                                arrAddress,
-                                depCode,
-                                arrCode,
-                                journeyDate,
-
-                                adultNumberCount,
-                                childNumberCount,
-                                infantNumberCount,
-                                planeClass,
-                              },
-                            })
-                          : navigate("/roundwayaftersearch", {
-                              state: {
-                                depAddress,
-                                arrAddress,
-                                depCode,
-                                arrCode,
-                                journeyDate,
-                                arrivalDate,
-                                adultNumberCount,
-                                childNumberCount,
-                                infantNumberCount,
-                                planeClass,
-                              },
-                            });
-                        window.location.reload();
+                      if (selectedRadioValue === "One Way") {
+                        handleOneway();
+                      } else {
                       }
                     }}
                     variant="contained"

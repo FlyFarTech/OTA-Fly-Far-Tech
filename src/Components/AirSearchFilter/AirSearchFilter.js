@@ -16,20 +16,66 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { PiSunHorizonLight, PiSunLight, PiMoonThin } from "react-icons/pi";
-function valuetext(value) {
-  return `${value}°C`;
-}
-const AirSearchFilter = () => {
+import SliderRange from "../HomeSearch/Oneway/SliderRange";
+import Countdown from "react-countdown";
+const AirSearchFilter = ({
+  flights,
+  handleAirlineFilter,
+  handleRefundability,
+  handleStops,
+  airlineFilter,
+  setAirlineFilter,
+  refundability,
+  stops,
+  handleBags,
+  bag,
+  priceRange,
+  setPriceRange,
+}) => {
   let AirSearchFilter = styled(Box)({
     marginTop: "11px",
   });
 
-  const [value, setValue] = React.useState([20, 37]);
+  const uniqueCarrierNames = [
+    ...new Set(flights.map((flight) => flight.carrierName)),
+  ];
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const uniqueBaggageOptions = Array.from(
+    new Set(
+      flights.flatMap((flight) =>
+        flight.segments.map((segment) => segment.bags)
+      )
+    )
+  ).filter(Boolean);
+
+  const [visibleAirlines, setVisibleAirlines] = useState(5);
+  const [showAllAirlines, setShowAllAirlines] = useState(false);
+  const toggleShowMoreAirlines = (e) => {
+    e.stopPropagation(); // Prevent the Accordion from automatically closing.
+    setShowAllAirlines(!showAllAirlines);
   };
 
+  const newPrices = flights.map((flight) => flight.clientPrice);
+  const newMinPrice = Math.min(...newPrices);
+  const newMaxPrice = Math.max(...newPrices);
+  console.log(newMinPrice);
+  console.log(newMaxPrice);
+  const [airlineExapand, setAirlineExpand] = useState(false);
+  const [refundableExapand, setRefundableExapand] = useState(false);
+  const [stopExapand, setStopExpand] = useState(false);
+  const [bagExapand, setBagExpand] = useState(false);
+  const [priceExpand, setPriceExpand] = useState(false);
+  const [flightScheduleExpand, setFlightScheduleExpand] = useState(false);
+
+  const targetTime = new Date();
+  targetTime.setHours(targetTime.getHours() + 22);
+  targetTime.setMinutes(targetTime.getMinutes() + 30);
+
+  // Calculate the initial time difference
+  const initialTimeDiff = targetTime - new Date();
+  const initialHours = Math.floor((initialTimeDiff / (1000 * 60 * 60)) % 24);
+  const initialMinutes = Math.floor((initialTimeDiff / (1000 * 60)) % 60);
+  const initialSeconds = Math.floor((initialTimeDiff / 1000) % 60);
   return (
     <AirSearchFilter>
       {/* Time Remaining */}
@@ -67,7 +113,39 @@ const AirSearchFilter = () => {
                 color: "var(--purple-color)",
               }}
             >
-              22:30
+              <Countdown
+                date={targetTime}
+                renderer={({ hours, minutes, seconds, completed }) => {
+                  if (completed) {
+                    // Countdown completed
+                    return (
+                      <Typography
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: "600",
+                          color: "var(--purple-color)",
+                        }}
+                      >
+                        00:00:00
+                      </Typography>
+                    );
+                  } else {
+                    return (
+                      <Typography
+                        sx={{
+                          fontSize: "14px",
+                          fontWeight: "600",
+                          color: "var(--purple-color)",
+                        }}
+                      >
+                        {`${hours + initialHours}:${minutes + initialMinutes}:${
+                          seconds + initialSeconds
+                        }`}
+                      </Typography>
+                    );
+                  }
+                }}
+              />
             </Typography>
           </Box>
         </Box>
@@ -79,8 +157,9 @@ const AirSearchFilter = () => {
           borderRadius: "5px",
         }}
       >
-        <Accordion sx={{ boxShadow: "none" }}>
+        <Accordion expanded={priceExpand} sx={{ boxShadow: "none" }}>
           <AccordionSummary
+            onClick={() => setPriceExpand(!priceExpand)}
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -102,15 +181,15 @@ const AirSearchFilter = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Typography sx={{ fontSize: "12px" }}>
-              Starts from ৳ 4,171 - ৳ 7,182 against your search. Price is a
-              subject to change.
+              Starts from ৳ {newMinPrice} sadfsdaf- ৳ {newMaxPrice} against your
+              search. Price is a subject to change.
             </Typography>
             <Box>
-              <Slider
-                value={value}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
+              <SliderRange
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                newMinPrice={newMinPrice}
+                newMaxPrice={newMaxPrice}
               />
             </Box>
           </AccordionDetails>
@@ -124,8 +203,9 @@ const AirSearchFilter = () => {
           borderRadius: "5px",
         }}
       >
-        <Accordion sx={{ boxShadow: "none" }}>
+        <Accordion expanded={flightScheduleExpand} sx={{ boxShadow: "none" }}>
           <AccordionSummary
+            onClick={() => setFlightScheduleExpand(!flightScheduleExpand)}
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -158,7 +238,6 @@ const AirSearchFilter = () => {
               }}
             >
               <Button
-                variant="contained"
                 sx={{
                   textTransform: "capitalize",
                   fontSize: "12px",
@@ -171,7 +250,6 @@ const AirSearchFilter = () => {
                 Departure
               </Button>
               <Button
-                variant="contained"
                 sx={{
                   textTransform: "capitalize",
                   fontSize: "12px",
@@ -194,18 +272,16 @@ const AirSearchFilter = () => {
             <Box>
               <Box
                 sx={{
-                  border: "2px solid var(---border-color)",
-                  padding: "3px",
                   marginTop: "10px",
                   display: "flex",
                   justifyContent: "center",
-                  gap: "5px",
+                  gap: "2px",
+                  margin: " 17px auto",
                   alignItems: "center",
                 }}
               >
-                <Box
+                <Button
                   sx={{
-                    width: "60px",
                     height: "54px",
                     bgcolor: "#EBF0F5",
                     borderRadius: "5px",
@@ -220,10 +296,9 @@ const AirSearchFilter = () => {
                       00.06AM
                     </Typography>
                   </Box>
-                </Box>
-                <Box
+                </Button>
+                <Button
                   sx={{
-                    width: "60px",
                     height: "54px",
                     bgcolor: "#EBF0F5",
                     borderRadius: "5px",
@@ -238,11 +313,9 @@ const AirSearchFilter = () => {
                       06.12PM
                     </Typography>
                   </Box>
-                </Box>
-                <Box
-                  variant="contained"
+                </Button>
+                <Button
                   sx={{
-                    width: "60px",
                     height: "54px",
                     bgcolor: "#EBF0F5",
                     borderRadius: "5px",
@@ -257,11 +330,9 @@ const AirSearchFilter = () => {
                       12.06PM
                     </Typography>
                   </Box>
-                </Box>
-                <Box
-                  variant="contained"
+                </Button>
+                <Button
                   sx={{
-                    width: "60px",
                     height: "54px",
                     bgcolor: "#EBF0F5",
                     borderRadius: "5px",
@@ -276,7 +347,7 @@ const AirSearchFilter = () => {
                       06.12PM
                     </Typography>
                   </Box>
-                </Box>
+                </Button>
               </Box>
             </Box>
           </AccordionDetails>
@@ -289,8 +360,9 @@ const AirSearchFilter = () => {
           borderRadius: "5px",
         }}
       >
-        <Accordion sx={{ boxShadow: "none" }}>
+        <Accordion expanded={airlineExapand} sx={{ boxShadow: "none" }}>
           <AccordionSummary
+            onClick={() => setAirlineExpand(!airlineExapand)}
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -311,35 +383,48 @@ const AirSearchFilter = () => {
             </Box>
           </AccordionSummary>
           <AccordionDetails>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox size="small" />}
-                label={
-                  <Typography sx={{ fontSize: "14px" }}>
-                    Biman Bangladesh Airlines
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                control={<Checkbox size="small" />}
-                label={
-                  <Typography
-                    sx={{
-                      fontSize: "14px",
-                    }}
-                  >
-                    <span> US-Bangla Airlines</span>
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                disabled
-                control={<Checkbox size="small" />}
-                label={
-                  <Typography sx={{ fontSize: "14px" }}>Air Astra</Typography>
-                }
-              />
-            </FormGroup>
+            {uniqueCarrierNames
+              .slice(
+                0,
+                showAllAirlines ? uniqueCarrierNames.length : visibleAirlines
+              )
+              .map((carrierName) => (
+                <FormControlLabel
+                  key={carrierName}
+                  control={
+                    <Checkbox
+                      size="small"
+                      value={carrierName}
+                      checked={airlineFilter === carrierName}
+                      onChange={(event) =>
+                        handleAirlineFilter(
+                          event.target.checked && event.target.value
+                        )
+                      }
+                    />
+                  }
+                  label={
+                    <Typography
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "600",
+                        color: "var(--grey-color)",
+                      }}
+                    >
+                      {carrierName}
+                    </Typography>
+                  }
+                />
+              ))}
+            {/* Show More / Show Less buttons */}
+            {uniqueCarrierNames.length > visibleAirlines && (
+              <Button
+                onClick={(e) => toggleShowMoreAirlines(e)}
+                sx={{ color: "var(--purple-color)", fontSize: "12px" }}
+              >
+                {showAllAirlines ? "Show Less Airlines" : "Show More Airlines"}
+              </Button>
+            )}
           </AccordionDetails>
         </Accordion>
       </Box>
@@ -350,8 +435,9 @@ const AirSearchFilter = () => {
           borderRadius: "5px",
         }}
       >
-        <Accordion sx={{ boxShadow: "none" }}>
+        <Accordion expanded={refundableExapand} sx={{ boxShadow: "none" }}>
           <AccordionSummary
+            onClick={() => setRefundableExapand(!refundableExapand)}
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -374,30 +460,53 @@ const AirSearchFilter = () => {
           <AccordionDetails>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox size="small" />}
+                control={
+                  <Checkbox
+                    size="small"
+                    value="NonRefundable"
+                    checked={"NonRefundable" === refundability}
+                    onChange={(event) =>
+                      handleRefundability(
+                        event.target.checked && event.target.value
+                      )
+                    }
+                  />
+                }
                 label={
-                  <Typography sx={{ fontSize: "14px" }}>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "var(--grey-color)",
+                    }}
+                  >
                     Non Refundable
                   </Typography>
                 }
               />
               <FormControlLabel
-                control={<Checkbox size="small" />}
+                control={
+                  <Checkbox
+                    value="Refundable"
+                    checked={"Refundable" === refundability}
+                    onChange={(event) =>
+                      handleRefundability(
+                        event.target.checked && event.target.value
+                      )
+                    }
+                    size="small"
+                  />
+                }
                 label={
                   <Typography
                     sx={{
                       fontSize: "14px",
+                      fontWeight: "600",
+                      color: "var(--grey-color)",
                     }}
                   >
-                    Partially Refundable
+                    Refundable
                   </Typography>
-                }
-              />
-              <FormControlLabel
-                disabled
-                control={<Checkbox size="small" />}
-                label={
-                  <Typography sx={{ fontSize: "14px" }}>Rules Wise</Typography>
                 }
               />
             </FormGroup>
@@ -411,8 +520,9 @@ const AirSearchFilter = () => {
           borderRadius: "5px",
         }}
       >
-        <Accordion sx={{ boxShadow: "none" }}>
+        <Accordion expanded={stopExapand} sx={{ boxShadow: "none" }}>
           <AccordionSummary
+            onClick={() => setStopExpand(!stopExapand)}
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -435,10 +545,72 @@ const AirSearchFilter = () => {
           <AccordionDetails>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox size="small" />}
+                control={
+                  <Checkbox
+                    value="1"
+                    size="small"
+                    checked={"1" === stops}
+                    onChange={(e) =>
+                      handleStops(e.target.checked && e.target.value)
+                    }
+                  />
+                }
                 label={
-                  <Typography sx={{ fontSize: "14px" }}>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "var(--grey-color)",
+                    }}
+                  >
                     Direct Flight
+                  </Typography>
+                }
+              />
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e) =>
+                      handleStops(e.target.checked && e.target.value)
+                    }
+                    value="2"
+                    checked={"2" === stops}
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "var(--grey-color)",
+                    }}
+                  >
+                    On Stop Flight
+                  </Typography>
+                }
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e) =>
+                      handleStops(e.target.checked && e.target.value)
+                    }
+                    value="3"
+                    checked={"3" === stops}
+                    size="small"
+                  />
+                }
+                label={
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "var(--grey-color)",
+                    }}
+                  >
+                    2 Stop Flight
                   </Typography>
                 }
               />
@@ -453,8 +625,9 @@ const AirSearchFilter = () => {
           borderRadius: "5px",
         }}
       >
-        <Accordion sx={{ boxShadow: "none" }}>
+        <Accordion expanded={bagExapand} sx={{ boxShadow: "none" }}>
           <AccordionSummary
+            onClick={() => setBagExpand(!bagExapand)}
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -475,12 +648,31 @@ const AirSearchFilter = () => {
             </Box>
           </AccordionSummary>
           <AccordionDetails>
-            <FormGroup>
+            {uniqueBaggageOptions.map((baggageOption) => (
               <FormControlLabel
-                control={<Checkbox size="small" />}
-                label={<Typography sx={{ fontSize: "14px" }}>Bags</Typography>}
+                control={
+                  <Checkbox
+                    size="small"
+                    value={baggageOption}
+                    checked={baggageOption === bag}
+                    onChange={(event) =>
+                      handleBags(event.target.checked && event.target.value)
+                    }
+                  />
+                }
+                label={
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "var(--grey-color)",
+                    }}
+                  >
+                    {baggageOption}
+                  </Typography>
+                }
               />
-            </FormGroup>
+            ))}
           </AccordionDetails>
         </Accordion>
       </Box>

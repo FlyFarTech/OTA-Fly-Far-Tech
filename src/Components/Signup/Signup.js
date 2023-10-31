@@ -1,4 +1,8 @@
 import styled from "@emotion/styled";
+import Swal from "sweetalert2";
+
+// CommonJS
+
 import {
   Box,
   Button,
@@ -9,13 +13,14 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const SignUpBox = styled(Box)({
     background: "var(--white-color)",
     width: "100%",
@@ -24,7 +29,13 @@ const Signup = () => {
     padding: "34px",
   });
 
-  let handleRegister = (e) => {
+  const capitalize = (str) => {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     let firstName = e.target.firstName.value;
@@ -33,18 +44,120 @@ const Signup = () => {
     let mobile = e.target.mobile.value;
     let email = e.target.email.value;
     let companyAddress = e.target.companyAddress.value;
-    let tinImage = e.target.tinImage.value;
+    let tinImage = e.target.tinImage.files[0];
     let password = e.target.password.value;
-    console.log(
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      companyName === "" ||
+      mobile === "" ||
+      email === "" ||
+      companyAddress === "" ||
+      password === "" ||
+      !tinImage
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Please fill in all the required fields.",
+      });
+      return;
+    }
+
+    if (password.length < 8) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Password must be at least 8 characters long.",
+      });
+      return;
+    }
+
+    if (/[/@*]/.test(firstName) || /[/@*]/.test(lastName)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "First Name and Last Name cannot contain /, @, or *.",
+      });
+      return;
+    }
+    firstName = capitalize(firstName);
+    lastName = capitalize(lastName);
+    // Create an object with the user data
+    let userInfo = {
       firstName,
       lastName,
       companyName,
       mobile,
       email,
       companyAddress,
-      tinImage,
-      password
-    );
+      password,
+    };
+
+    // Create a FormData object to handle the file upload
+    let formData = new FormData();
+    formData.append("firstName", userInfo.firstName);
+    formData.append("lastName", userInfo.lastName);
+    formData.append("company", userInfo.companyName);
+    formData.append("phone", userInfo.mobile);
+    formData.append("email", userInfo.email);
+    formData.append("companyAdd", userInfo.companyAddress);
+    formData.append("password", userInfo.password);
+    formData.append("confirmPassword", userInfo.password);
+    formData.append("picture", tinImage);
+
+    // Define the API endpoint URL
+    const apiUrl =
+      "https://quickticketsb2b-nodejs.de.r.appspot.com/api/v1/agent/create_agent";
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        Swal.fire("Registration successful! Please Wait for approval");
+
+        // Clear the form fields
+        e.target.firstName.value = "";
+        e.target.lastName.value = "";
+        e.target.companyName.value = "";
+        e.target.mobile.value = "";
+        e.target.email.value = "";
+        e.target.companyAddress.value = "";
+        e.target.tinImage.value = ""; // Clear file input
+        e.target.password.value = "";
+
+        navigate("/");
+      } else {
+        // Handle the error, check if it's a duplicate email error
+        const data = await response.json();
+        if (data && data.error.includes("Duplicate entry")) {
+          // Display a specific error message for duplicate email
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "This email is already registered. Please use a different email.",
+          });
+        } else {
+          // Display a generic error message
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Registration failed. Please try again.",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      // Handle any network errors here
+      Swal.fire({
+        icon: "error",
+        title: "Network Error",
+        text: "Registration failed due to a network issue. Please try again later.",
+      });
+    }
   };
   return (
     <Box
@@ -54,7 +167,7 @@ const Signup = () => {
       }}
     >
       <form onSubmit={handleRegister}>
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
           <SignUpBox>
             <Container>
               <Typography
@@ -97,6 +210,7 @@ const Signup = () => {
                             type="text"
                             id="firstName"
                             name="firstName"
+                            autoComplete="given-name"
                             style={{
                               width: "100%",
                               border: "none",
@@ -135,6 +249,7 @@ const Signup = () => {
                             type="text"
                             id="companyName"
                             name="companyName"
+                            autoComplete="organization"
                             style={{
                               width: "100%",
                               border: "none",
@@ -173,6 +288,7 @@ const Signup = () => {
                             type="number"
                             id="mobile"
                             name="mobile"
+                            autoComplete="tel-mobile"
                             style={{
                               width: "100%",
                               border: "none",
@@ -211,6 +327,7 @@ const Signup = () => {
                             type="email"
                             id="email"
                             name="email"
+                            autoComplete="email"
                             style={{
                               width: "100%",
                               border: "none",
@@ -251,6 +368,7 @@ const Signup = () => {
                             type="text"
                             id="lastName"
                             name="lastName"
+                            autoComplete="family-name"
                             style={{
                               width: "100%",
                               border: "none",
@@ -289,6 +407,7 @@ const Signup = () => {
                             type="text"
                             id="companyAddress"
                             name="companyAddress"
+                            autoComplete="street-address"
                             style={{
                               width: "100%",
                               border: "none",
@@ -302,7 +421,7 @@ const Signup = () => {
                       {/* TIN Copy */}
                       <Box
                         sx={{
-                          marginTop: "31px",
+                          marginTop: "20px",
                         }}
                       >
                         <Box
@@ -313,7 +432,7 @@ const Signup = () => {
                             alignItems: "center",
                             textAlign: "center",
                             justifyContent: "center",
-                            height: "43px",
+                            height: "50px",
                           }}
                         >
                           <input
@@ -325,6 +444,7 @@ const Signup = () => {
                               textAlign: "center",
                             }}
                             name="tinImage"
+                            accept=".png, .jpg, .jpeg, .pdf"
                           />
                         </Box>
                       </Box>
@@ -354,6 +474,7 @@ const Signup = () => {
                             Password
                           </label>
                           <input
+                            autoComplete="new-password"
                             name="password"
                             type="password"
                             id="password"
@@ -373,7 +494,7 @@ const Signup = () => {
               <Box sx={{ marginTop: "35px" }}>
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox size="small" />}
+                    control={<Checkbox size="small" name="agreeToTerms" />}
                     label={
                       <Typography
                         sx={{

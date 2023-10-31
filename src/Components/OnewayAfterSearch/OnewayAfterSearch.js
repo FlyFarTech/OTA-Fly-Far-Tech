@@ -7,41 +7,38 @@ import OnewayflightBox from "./OnewayflightBox/OnewayflightBox";
 import { useLocation } from "react-router-dom";
 
 import { ThreeDots } from "react-loader-spinner";
+import dayjs from "dayjs";
 const OnewayAfterSearch = () => {
   let [flights, setFlights] = useState([]);
 
   let location = useLocation();
 
-  let departureCode =
-    location?.state?.departureCode || location?.state?.depCode;
+  let departureCode = location?.state?.departureCode || "DAC";
   let departureAddress =
-    location?.state?.departureAddress || location?.state?.depAddress;
+    location?.state?.departureAddress || "Dhaka,BANGLADESH";
   let arrivalAddress =
-    location?.state?.arrivalAddress || location?.state?.arrAddress;
-  let arrivalCode = location?.state?.arrivalCode || location?.state?.arrCode;
+    location?.state?.arrivalAddress || "Cox's Bazar,Bangladesh";
+  let arrivalCode = location?.state?.arrivalCode || "CXB";
   let departureDate =
-    location?.state?.checkInDate || location?.state?.journeyDate;
-  let adultCount =
-    location?.state?.adultCount || location?.state?.adultNumberCount || 0;
-  let childCount =
-    location?.state?.childCount || location?.state?.childNumberCount || 0;
-  let infantCount =
-    location?.state?.infantCount || location?.state?.infantNumberCount || 0;
+    location?.state?.checkInDate ||
+    dayjs(new Date()).add(1, "day").format("ddd, DD MMM YY");
+  let adultCount = location?.state?.adultCount || 1;
+  let childCount = location?.state?.childCount || 0;
+  let infantCount = location?.state?.infantCount || 0;
   let totalPassenger = location?.state?.totalPassenger;
-  let flightClass = location?.state?.flightClass || location?.state?.planeClass;
+  let flightClass = location?.state?.flightClass || "Economy";
 
-  console.log(
-    departureCode,
-    arrivalCode,
-    departureDate,
-    adultCount,
-    childCount,
-    infantCount
-  );
+  const [departure, setDeparture] = useState(departureCode);
+  const [arrival, setArrival] = useState(arrivalCode);
+  const [deparDate, setDeparDate] = useState(departureDate);
+  const [adult, setAdult] = useState(adultCount);
+  const [child, setChild] = useState(childCount);
+  const [infant, setInfant] = useState(infantCount);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(
-      `https://quickticketsb2b-nodejs.de.r.appspot.com/api/v1/search-results?type=oneway&arr=${arrivalCode}&dep=${departureCode}&depdate=${departureDate}&adult=${adultCount}&child=${childCount}&infant=${infantCount}`
+      `https://flyfar-quicktickets-394105.an.r.appspot.com/api/v1/search-results?type=oneway&arr=${arrival}&dep=${departure}&depdate=${deparDate}&adult=${adult}&child=${child}&infant=${infant}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -51,15 +48,29 @@ const OnewayAfterSearch = () => {
       .catch((error) => {
         console.error("Error fetching flight data:", error);
       });
-  }, [
-    departureCode,
-    arrivalCode,
-    departureDate,
-    adultCount,
-    childCount,
-    infantCount,
-  ]);
+  }, [departure, arrival, deparDate, adult, child, infant]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [airlineFilter, setAirlineFilter] = useState("");
+  const [refundability, setRefundability] = useState("");
+  const [stops, setStops] = useState("");
+  const [bag, setBag] = useState("");
+  const [priceRange, setPriceRange] = useState("");
+  let handleAirlineFilter = (airline) => {
+    setAirlineFilter(airline);
+  };
+  let handleRefundability = (refundable) => {
+    setRefundability(refundable);
+  };
+
+  let handleStops = (stop) => {
+    setStops(stop);
+  };
+
+  let handleBags = (baggage) => {
+    setBag(baggage);
+  };
+
   console.log(flights);
   return (
     <>
@@ -75,6 +86,12 @@ const OnewayAfterSearch = () => {
           arrivalAddress={arrivalAddress}
           totalPassenger={totalPassenger}
           flightClass={flightClass}
+          setDeparture={setDeparture}
+          setArrival={setArrival}
+          setDeparDate={setDeparDate}
+          setAdult={setAdult}
+          setChild={setChild}
+          setInfant={setInfant}
         />
       </Box>
 
@@ -103,13 +120,46 @@ const OnewayAfterSearch = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} lg={3}>
               {/* filter search area */}
-              <AirSearchFilter />
+              <AirSearchFilter
+                flights={flights}
+                airlineFilter={airlineFilter}
+                refundability={refundability}
+                setRefundability={refundability}
+                stops={stops}
+                setStops={setStops}
+                setAirlineFilter={setAirlineFilter}
+                handleAirlineFilter={handleAirlineFilter}
+                handleRefundability={handleRefundability}
+                handleStops={handleStops}
+                handleBags={handleBags}
+                bag={bag}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+              />
             </Grid>
             <Grid item xs={12} lg={9}>
               {/*All flights area */}
-              {flights?.map((flight, index) => (
-                <OnewayflightBox key={index} flight={flight} />
-              ))}
+              {flights
+                ?.filter((flight) => {
+                  if (airlineFilter && flight.carrierName !== airlineFilter)
+                    return false;
+                  if (refundability && flight.refundable !== refundability)
+                    return false;
+                  if (stops && flight.segments.length !== parseInt(stops))
+                    return false;
+                  return true;
+                })
+                .map((flight, index) => {
+                  // Check if 'bag' matches the number of bags in any segment
+                  if (bag) {
+                    const matchingSegment = flight.segments.some(
+                      (segment) => segment.bags === bag
+                    );
+                    if (!matchingSegment) return null; // Skip this flight if no matching segment
+                  }
+
+                  return <OnewayflightBox key={index} flight={flight} />;
+                })}
             </Grid>
           </Grid>
         </Container>
