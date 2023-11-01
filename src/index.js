@@ -10,6 +10,7 @@ import OnewayAfterSearch from "./Components/OnewayAfterSearch/OnewayAfterSearch"
 import RoundwayAfterSearch from "./Components/RoundwayAfterSearch/RoundwayAfterSearch";
 import Signin from "./Components/Signin/Signin";
 import Signup from "./Components/Signup/Signup";
+import Booking from "./Components/Booking/Booking";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/roundwayaftersearch",
         element: <RoundwayAfterSearch />,
+      },
+      {
+        path: "/booking",
+        element: <Booking />,
       },
       {
         path: "/signin",

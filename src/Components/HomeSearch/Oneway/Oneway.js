@@ -184,7 +184,7 @@ const Oneway = ({ setSelectedRadioValue }) => {
                 ) : (
                   <Back
                     onClick={(e) => {
-                      setisToggle(true);
+                      setisToggle(false);
                     }}
                     style={{ transform: "rotate(180deg)", height: "20px" }}
                   />
