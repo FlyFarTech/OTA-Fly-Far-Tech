@@ -184,14 +184,13 @@ const AirSearchFilter = ({
               Starts from ৳ {newMinPrice} sadfsdaf- ৳ {newMaxPrice} against your
               search. Price is a subject to change.
             </Typography>
-            <Box>
-              <SliderRange
-                priceRange={priceRange}
-                setPriceRange={setPriceRange}
-                newMinPrice={newMinPrice}
-                newMaxPrice={newMaxPrice}
-              />
-            </Box>
+
+            <SliderRange
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              newMinPrice={newMinPrice}
+              newMaxPrice={newMaxPrice}
+            />
           </AccordionDetails>
         </Accordion>
       </Box>

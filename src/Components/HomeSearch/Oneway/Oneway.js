@@ -177,14 +177,14 @@ const Oneway = ({ setSelectedRadioValue }) => {
                 {isToggle ? (
                   <Front
                     onClick={(e) => {
-                      setisToggle(true);
+                      handleToggle();
                     }}
                     style={{ height: "20px" }}
                   />
                 ) : (
                   <Back
                     onClick={(e) => {
-                      setisToggle(false);
+                      handleToggle();
                     }}
                     style={{ transform: "rotate(180deg)", height: "20px" }}
                   />
@@ -194,13 +194,13 @@ const Oneway = ({ setSelectedRadioValue }) => {
                   <Back
                     style={{ height: "20px" }}
                     onClick={(e) => {
-                      setisToggle(false);
+                      handleToggle();
                     }}
                   />
                 ) : (
                   <Front
                     onClick={(e) => {
-                      setisToggle(true);
+                      handleToggle();
                     }}
                     style={{ transform: "rotate(180deg)", height: "20px" }}
                   />

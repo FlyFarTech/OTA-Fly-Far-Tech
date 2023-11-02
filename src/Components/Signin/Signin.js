@@ -49,6 +49,7 @@ const Signin = () => {
         const responseData = await response.json();
         if (responseData.success === true) {
           Swal.fire("Success", "Login Successful!", "success");
+          localStorage.setItem("user", JSON.stringify(responseData.data));
           navigate("/");
         } else {
           if (responseData && responseData.error.includes("Invalid password")) {

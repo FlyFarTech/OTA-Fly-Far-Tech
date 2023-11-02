@@ -35,10 +35,17 @@ const OnewayAfterSearch = () => {
   const [child, setChild] = useState(childCount);
   const [infant, setInfant] = useState(infantCount);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://flyfar-quicktickets-394105.an.r.appspot.com/api/v1/search-results?type=oneway&arr=${arrival}&dep=${departure}&depdate=${deparDate}&adult=${adult}&child=${child}&infant=${infant}`
+      `https://quickticketsb2b-nodejs.de.r.appspot.com/api/v1/agent/booking/search-results?type=oneway&arr=${arrival}&dep=${departure}&depdate=${deparDate}&adult=${adult}&child=${child}&infant=${infant}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }
     )
       .then((response) => response.json())
       .then((data) => {
